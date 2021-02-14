@@ -1,0 +1,40 @@
+name: Update tldr commands file
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron:  '1 * * * *'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python Environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Execute Python script
+        run: |
+          cd tldrdict
+          python -c "import app;app.update_commands_file()"
+
+      - name: setup git config
+        run: |
+          git config user.name ${{ secrets.USERNAME }}
+          git config user.email ${{ secrets.EMAIL }}
+
+      - name: commit changes
+        run: |
+          chmod +x ./tldrdict/commit.sh
+          ./tldrdict/commit.sh
