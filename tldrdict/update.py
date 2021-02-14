@@ -1,23 +1,26 @@
 import json
 from os import path
-
+import json
 import requests
+
 
 def get_dict():
     r = requests.get(url="https://tldr.sh/assets/")
     data = json.loads(r.text)
     commands = {}
     for command in range(len(data["commands"])):
-        commands[data["commands"][command]["name"]] = data["commands"][command]["platform"][0]
+        commands[data["commands"][command]["name"]
+                 ] = data["commands"][command]["platform"][0]
     return commands
 
 
 def update_commands_file():
     """Run scheduled job to update commands file."""
-    data = get_dict()
+    _ = get_dict()
+    data = json.dumps(_)
     try:
         file = open('static/commands.txt', 'wt')
-        file.write(str(data))
+        file.write(data)
         file.close()
         print("Commands added")
 
