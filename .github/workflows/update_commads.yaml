@@ -5,7 +5,7 @@ on:
     branches:
       - master
   schedule:
-    - cron:  '* * * * *'
+    - cron:  '0 * * * *'
 
 jobs:
 
@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
       - name: Setup Python Environment
         uses: actions/setup-python@v2
