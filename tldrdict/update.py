@@ -16,7 +16,7 @@ def update_commands_file():
     """Run scheduled job to update commands file."""
     data = get_dict()
     try:
-        file = open('tldrdict/static/commands.txt', 'wt')
+        file = open('static/commands.txt', 'wt')
         file.write(str(data))
         file.close()
         print("Commands added")
