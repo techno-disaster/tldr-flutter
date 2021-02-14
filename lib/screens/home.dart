@@ -1,10 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 //import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:http/http.dart' as http;
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:tldr/models/commad.dart';
+import 'package:tldr/remote/requests.dart';
+import 'package:tldr/screens/command_details.dart';
+import 'package:tldr/screens/search_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
+import 'package:flappy_search_bar/scaled_tile.dart';
 
 class TLDR extends StatefulWidget {
   @override
@@ -12,63 +19,87 @@ class TLDR extends StatefulWidget {
 }
 
 class _TLDRState extends State<TLDR> {
-  Uri url = Uri.https('tldr.sh', 'assets');
-  String data = "";
-  Map<String, String>? commands = {};
-  void getpage() async {
-    try {
-      http.Response response = await http.get(url);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        print(data["commands"].length);
-        for (var i = 0; i < data["commands"].length; i++) {
-          commands!
-              .putIfAbsent(data["commands"][i]["name"], () => data["commands"][i]["platform"][0]);
-        }
-        print(commands);
-        // setState(() {
-        //   data = response.body;
-        // });
-      } else
-        throw Exception();
-    } catch (e) {
-      print(e);
-    }
-  }
+  TldrBackend api = TldrBackend();
+  List<Command> commands = [];
+  List<Command> suggestions = [];
 
   @override
   void initState() {
-    getpage();
+    getCommands();
     super.initState();
+  }
+
+  void getCommands() async {
+    var data = await api.commands();
+    setState(() {
+      commands = data.entries.map((e) => Command(e.key, e.value)).toList();
+    });
+    // var _list = commands.
+  }
+
+  Future<List<Command>> getSuggestions(String text) async {
+    suggestions.addAll(commands);
+    suggestions.retainWhere((element) => element.name.toLowerCase().contains(text.toLowerCase()));
+    suggestions = LinkedHashSet<Command>.from(suggestions)
+        .toList(); // remove repeated elements due to repeated addAll more info: https://api.dart.dev/stable/2.4.0/dart-collection/LinkedHashSet/LinkedHashSet.from.html
+    return suggestions;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
-      appBar: AppBar(),
-      body: Container(
-        child: MarkdownWidget(
-          shrinkWrap: true,
-          data: data,
-          childMargin: EdgeInsets.all(10),
-          loadingWidget: Center(
-            child: CircularProgressIndicator(),
-          ),
-          styleConfig: StyleConfig(
-            pConfig: PConfig(
-              onLinkTap: (url) => _launchUrl(url),
-            ),
-            markdownTheme: MarkdownTheme.darkTheme,
-          ),
+      backgroundColor: Color(0xff17181c),
+      appBar: AppBar(
+        title: Text(
+          "Home",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        // child: Markdown(
-        //   data: data,
-        // ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Theme.of(context).accentColor,
+            ),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                        commands: commands,
+                      )),
+            ),
+          ),
+        ],
+        elevation: 0,
+        backgroundColor: Color(0xff17181c),
       ),
+      body: Center(
+          child: TypeAheadField(
+              textFieldConfiguration: TextFieldConfiguration(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              suggestionsCallback: (pattern) async {
+                return await getSuggestions(pattern);
+              },
+              itemBuilder: (context, suggestion) {
+                return ListTile(
+                  title: Text((suggestion as Command).name),
+                  subtitle: Text(suggestion.platform),
+                );
+              },
+              onSuggestionSelected: (suggestion) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommandDetails(
+                      command: suggestion as Command,
+                    ),
+                  ),
+                );
+              })
+          // child: Markdown(
+          //   data: data,
+          // ),
+          ),
     );
   }
 }
-
-void _launchUrl(_url) async =>
-    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
