@@ -27,7 +27,7 @@ jobs:
       - name: Execute Python script
         run: |
           cd tldrdict
-          python -c "import app;app.update_commands_file()"
+          python update.py
 
       - name: setup git config
         run: |
