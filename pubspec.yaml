@@ -29,6 +29,10 @@ dependencies:
   markdown_widget: ^1.2.6
   url_launcher: ^6.0.0-nullsafety.6
   flappy_search_bar: ^1.7.2
+  google_fonts: ^2.0.0-nullsafety.0
+  path_provider: ^2.0.0-nullsafety
+  animated_text_kit: ^3.1.0
+  flare_flutter: ^2.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -51,9 +55,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

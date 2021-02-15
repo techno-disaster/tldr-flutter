@@ -1,17 +1,12 @@
-import 'dart:convert';
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
-//import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:http/http.dart' as http;
-import 'package:markdown_widget/markdown_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tldr/models/commad.dart';
 import 'package:tldr/remote/requests.dart';
-import 'package:tldr/screens/command_details.dart';
 import 'package:tldr/screens/search_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flappy_search_bar/flappy_search_bar.dart';
-import 'package:flappy_search_bar/scaled_tile.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 class TLDR extends StatefulWidget {
   @override
@@ -39,7 +34,8 @@ class _TLDRState extends State<TLDR> {
 
   Future<List<Command>> getSuggestions(String text) async {
     suggestions.addAll(commands);
-    suggestions.retainWhere((element) => element.name.toLowerCase().contains(text.toLowerCase()));
+    suggestions.retainWhere(
+        (element) => element.name.toLowerCase().contains(text.toLowerCase()));
     suggestions = LinkedHashSet<Command>.from(suggestions)
         .toList(); // remove repeated elements due to repeated addAll more info: https://api.dart.dev/stable/2.4.0/dart-collection/LinkedHashSet/LinkedHashSet.from.html
     return suggestions;
@@ -62,9 +58,10 @@ class _TLDRState extends State<TLDR> {
             ),
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) => SearchScreen(
-                        commands: commands,
-                      )),
+                builder: (context) => SearchScreen(
+                  commands: commands,
+                ),
+              ),
             ),
           ),
         ],
@@ -72,34 +69,91 @@ class _TLDRState extends State<TLDR> {
         backgroundColor: Color(0xff17181c),
       ),
       body: Center(
-          child: TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          children: [
+            Container(
+              height: 300,
+              width: 300,
+              child: FlareActor("assets/images/tldr.flr",
+                  alignment: Alignment.center,
+                  fit: BoxFit.contain,
+                  animation: "startup"),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Hero(
+                  transitionOnUserGestures: true,
+                  tag: "search-bar",
+                  child: SearchButton(
+                    commands: commands,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchButton extends StatelessWidget {
+  final List<Command> commands;
+
+  const SearchButton({Key? key, required this.commands}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      color: Color(0xff2e2f37),
+      child: SizedBox(
+        width: 200,
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Search ",
+                style: GoogleFonts.roboto(
+                  textStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).accentColor,
+                      fontSize: 24),
+                )),
+            TypewriterAnimatedTextKit(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(
+                    commands: commands,
+                  ),
                 ),
               ),
-              suggestionsCallback: (pattern) async {
-                return await getSuggestions(pattern);
-              },
-              itemBuilder: (context, suggestion) {
-                return ListTile(
-                  title: Text((suggestion as Command).name),
-                  subtitle: Text(suggestion.platform),
-                );
-              },
-              onSuggestionSelected: (suggestion) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CommandDetails(
-                      command: suggestion as Command,
-                    ),
-                  ),
-                );
-              })
-          // child: Markdown(
-          //   data: data,
-          // ),
+              speed: Duration(milliseconds: 200),
+              isRepeatingAnimation: false,
+              text: ["tldr"],
+              textStyle: TextStyle(
+                color: Theme.of(context).accentColor,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.start,
+            ),
+          ],
+        ),
+      ),
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => SearchScreen(
+            commands: commands,
           ),
+        ),
+      ),
     );
   }
 }
