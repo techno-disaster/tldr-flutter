@@ -24,15 +24,18 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_typeahead: ^3.0.0-nullsafety.0
-  #flutter_markdown: ^0.6.0-nullsafety.1
   http: ^0.13.0
   markdown_widget: ^1.2.6
   url_launcher: ^6.0.0-nullsafety.6
   flappy_search_bar: ^1.7.2
   google_fonts: ^2.0.0-nullsafety.0
-  path_provider: ^2.0.0-nullsafety
   animated_text_kit: ^3.1.0
   flare_flutter: ^2.0.6
+  flutter_bloc: ^7.0.0-nullsafety.2
+  equatable: ^2.0.0-nullsafety.3
+  hive_flutter: ^0.3.1
+  hive: ^1.6.0-nullsafety.2
+  intl: ^0.17.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -42,6 +45,19 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.11.1
+  hive_generator: ^0.9.0-nullsafety.1
+  flutter_launcher_icons: 
+    git:
+      url: git://github.com/fluttercommunity/flutter_launcher_icons.git
+      ref: null-safety
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/tldr.png"
+dependency_overrides:
+  path_provider: ^2.0.0-nullsafety
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

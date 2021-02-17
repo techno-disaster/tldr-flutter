@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:tldr/models/commad.dart';
+import 'package:tldr/command/bloc/command_bloc.dart';
+import 'package:tldr/command/models/command.dart';
 import 'package:tldr/screens/command_details.dart';
+import 'package:tldr/utils/constants.dart';
 
 class SearchScreen extends StatefulWidget {
   final List<Command> commands;
@@ -17,6 +20,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<Command> suggestions = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<List<Command>> getSuggestions(String text) async {
     suggestions.addAll(widget.commands);
@@ -34,6 +38,9 @@ class _SearchScreenState extends State<SearchScreen> {
     _controller.addListener(() {
       setState(() {});
     });
+
+    BlocProvider.of<CommandBloc>(context).add(GetFromFavorite());
+
     super.initState();
   }
 
@@ -46,6 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.black,
       appBar: AppBar(
         titleSpacing: 0,
@@ -85,16 +93,28 @@ class _SearchScreenState extends State<SearchScreen> {
                   return await getSuggestions(pattern);
                 } else
                   return [
-                    Command("null", "null")
+                    Command(name: "null", platform: "null")
                   ]; // bad workaround for condition when user opens search screen for first time.
               },
               itemBuilder: (context, suggestion) {
                 return (suggestion as Command).name == "null"
                     ? Container()
-                    : ListTile(
-                        tileColor: Color(0xff17181c),
-                        title: Text(suggestion.name),
-                        subtitle: Text(suggestion.platform),
+                    : BlocBuilder<CommandBloc, CommandState>(
+                        builder: (context, state) {
+                          if (state is CommandState) {
+                            return ListTile(
+                                tileColor: Color(
+                                  0xff17181c,
+                                ),
+                                title: Text(suggestion.name),
+                                subtitle: Text(suggestion.platform),
+                                trailing: getIcon(
+                                    _scaffoldKey.currentContext!, suggestion));
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
                       );
               },
               noItemsFoundBuilder: (_) => ListTile(
@@ -103,17 +123,25 @@ class _SearchScreenState extends State<SearchScreen> {
                     tileColor: Color(0xff17181c),
                   ),
               onSuggestionSelected: (suggestion) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CommandDetails(
-                      command: suggestion as Command,
-                    ),
+                Command command = suggestion as Command;
+                Command c = Command(
+                    name: command.name,
+                    platform: command.platform,
+                    dateTime: DateTime.now());
+                BlocProvider.of<CommandBloc>(context).add(
+                  AddToHistory(c),
+                );
+                Navigator.push(
+                  context,
+                  _createRoute(
+                    command,
                   ),
                 );
+                BlocProvider.of<CommandBloc>(context).add(GetFromHistory());
               }),
         ),
       ),
-      body: _controller.text.length > 2
+      body: _controller.text.length > 1
           ? Container()
           : Center(
               child: Column(
@@ -135,4 +163,20 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
     );
   }
+}
+
+Route _createRoute(Command command) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        CommandDetails(command: command),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      );
+    },
+  );
 }
