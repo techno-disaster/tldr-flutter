@@ -46,4 +46,6 @@ tldrdict/__pychache__
 tldrdict/.idea
 tldrdict/venv
 
-
+# ruby stuff
+.bundle/
+vendor/

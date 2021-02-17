@@ -1,4 +1,4 @@
-package com.example.tldr
+package wtf.technodisaster.tldr
 
 import io.flutter.embedding.android.FlutterActivity
 
