@@ -4,9 +4,9 @@
   </a>
 
   <p align="center">
-    <a href="https://github.com/Techno-Disaster/tldr/issues/new">Report bug</a>
+    <a href="https://github.com/Techno-Disaster/tldr/issues/new?template=bug_report.md">Report bug</a>
     ·
-    <a href="https://github.com/Techno-Disaster/tldr/issues/new">Request feature</a>
+    <a href="https://github.com/Techno-Disaster/tldr/issues/new?template=feature_request.md">Request feature</a>
   </p>
 </p>
 
@@ -53,7 +53,7 @@ This app is just that: an ever-growing collection of examples for the most commo
 
 ## Bugs and feature requests
 
-[Please open a new issue](https://github.com/Techno-Disaster/tldr/issues/new).
+[Please open a new issue](https://github.com/Techno-Disaster/tldr/issues/new?template=bug_report.md).
 
 ## Contributing
 
