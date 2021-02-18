@@ -49,3 +49,7 @@ tldrdict/venv
 # ruby stuff
 .bundle/
 vendor/
+
+android/console_fastlane.json
+key.jks
+key.properties
