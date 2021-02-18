@@ -1,2 +1,2 @@
-json_key_file("console_fastlane.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+json_key_file("/home/techno_disaster/Flutter/apps/OpenSource/tldr/android/console_fastlane.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
 package_name("wtf.technodisaster.tldr") # e.g. com.krausefx.app

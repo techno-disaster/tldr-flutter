@@ -1,0 +1,1 @@
+tldr, simplified and community-driven man pages.
