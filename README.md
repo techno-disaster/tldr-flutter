@@ -68,6 +68,12 @@ Jayesh Nirve
 
 #### Or just use the sponser button on Github
 
+### Thanks
+
+* [tldr pages](https://github.com/tldr-pages/tldr) for the logo.
+* [Hotpot.ai](https://github.com/HotpotDesign) for the screenshot templates and graphics generator
+* [Cas van Luijtelaar](https://flare.rive.app/a/cvl/files/flare/site-animaton/embed) for the flare url
+
 ## Copyright and license
 
 Code released under the [MIT License](https://github.com/Techno-Disaster/tldr/blob/master/LICENSE).
