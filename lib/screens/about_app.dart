@@ -72,7 +72,7 @@ class AboutApp extends StatelessWidget {
                     ),
                     color: Color(0xff2e2f37),
                     onPressed: () =>
-                        _launchUrl(iconURL), //TODO: add appURL here
+                        _launchUrl(appURL), 
                     child: Row(
                       children: [
                         Container(  

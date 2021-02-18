@@ -70,5 +70,5 @@ Jayesh Nirve
 
 ## Copyright and license
 
-Code and documentation copyright 2018 the authors. Code released under the [MIT License](https://github.com/Techno-Disaster/tldr/blob/master/LICENSE).
+Code released under the [MIT License](https://github.com/Techno-Disaster/tldr/blob/master/LICENSE).
 

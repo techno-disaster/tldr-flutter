@@ -5,12 +5,10 @@ import 'package:tldr/command/bloc/command_bloc.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/screens/about_app.dart';
 import 'package:tldr/screens/command_details.dart';
-import 'package:path/path.dart';
 
 const String RECENT_COMMANDS = "recent_commands";
 const String FAVORITE_COMMANDS = "favorite_commands";
 
-//TODO: add app github link
 final String aboutApp =
     "The [tldr-pages](https://github.com/tldr-pages/tldr) project is a collection of community-maintained help pages for command-line tools, that aims to be a simpler, more approachable complement to traditional [man pages](https://en.wikipedia.org/wiki/Man_page).\n\nMaybe you are new to the command-line world? Or just a little rusty?\nOr perhaps you can't always remember the arguments to `lsof`, or `tar`?\n\nIt certainly doesn't help that the first option explained in `man tar` is:\n ``` -b blocksize Specify the block size, in 512-byte records, for tape drive I/O. As a rule, this argument is only needed when reading from or writing to tape drives, and usually not even then as the default block size of 20 records (10240 bytes) is very common. ```\n\nThere seems to be room for simpler help pages, focused on practical examples.\n\nThis repository is just that: an ever-growing collection of examples\nfor the most common UNIX, Linux, macOS, SunOS and Windows command-line tools.";
 
@@ -18,6 +16,7 @@ final String flareURL =
     "https://flare.rive.app/a/cvl/files/flare/site-animaton/embed";
 
 final String iconURL = "https://github.com/tldr-pages";
+final String appURL = "https://github.com/Techno-Disaster";
 
 final String baseURL = "https://github.com/tldr-pages/tldr/blob/master/pages/";
 

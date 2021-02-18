@@ -15,16 +15,34 @@ class FavoritesScreen extends StatelessWidget {
       ),
       body: BlocBuilder<CommandBloc, CommandState>(builder: (context, state) {
         if (state is CommandState) {
-          return ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemCount: state.favoriteCommands.length,
-            itemBuilder: (context, index) {
-              return FavoritesTile(index: index);
-            },
-            separatorBuilder: (context, index) {
-              return Divider();
-            },
-          );
+          return state.favoriteCommands.isNotEmpty
+              ? ListView.separated(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: state.favoriteCommands.length,
+                  itemBuilder: (context, index) {
+                    return FavoritesTile(index: index);
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider();
+                  },
+                )
+              : Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.code,
+                        color: Colors.blueAccent,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Your favorite commands will appear here",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                );
         }
         return Center(
           child: CircularProgressIndicator(),
