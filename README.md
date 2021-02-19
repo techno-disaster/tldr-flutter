@@ -45,7 +45,9 @@ This app is just that: an ever-growing collection of examples for the most commo
 
 ### CI
 
-* Will add some sort CI for fastlane here
+#### TODO:
+- [ ] Add travis with fastlane here
+- [ ] Integrate github releases in the same travis script
 
 ## Build and run
 * Assuming this is your first project, install [flutter](https://flutter.dev/docs/get-started/install)
