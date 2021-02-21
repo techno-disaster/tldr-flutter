@@ -4,9 +4,9 @@
   </a>
 
   <p align="center">
-    <a href="https://github.com/Techno-Disaster/tldr/issues/new?template=bug_report.md">Report bug</a>
+    <a href="https://github.com/Techno-Disaster/tldr-flutter/issues/new?template=bug_report.md">Report bug</a>
     ·
-    <a href="https://github.com/Techno-Disaster/tldr/issues/new?template=feature_request.md">Request feature</a>
+    <a href="https://github.com/Techno-Disaster/tldr-flutter/issues/new?template=feature_request.md">Request feature</a>
   </p>
 </p>
 
@@ -57,7 +57,7 @@ This app is just that: an ever-growing collection of examples for the most commo
 
 ## Bugs and feature requests
 
-[Please open a new issue](https://github.com/Techno-Disaster/tldr/issues/new?template=bug_report.md).
+[Please open a new issue](https://github.com/Techno-Disaster/tldr-flutter/issues/new?template=bug_report.md).
 
 ## Contributing
 
@@ -80,5 +80,5 @@ Jayesh Nirve
 
 ## Copyright and license
 
-Code released under the [MIT License](https://github.com/Techno-Disaster/tldr/blob/master/LICENSE).
+Code released under the [MIT License](https://github.com/Techno-Disaster/tldr-flutter/blob/master/LICENSE).
 

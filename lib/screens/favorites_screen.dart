@@ -28,6 +28,7 @@ class FavoritesScreen extends StatelessWidget {
                 )
               : Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.code,

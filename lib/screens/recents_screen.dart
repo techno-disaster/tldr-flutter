@@ -28,6 +28,7 @@ class RecentsSreen extends StatelessWidget {
                 )
               : Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.history,

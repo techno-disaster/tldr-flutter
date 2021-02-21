@@ -16,7 +16,7 @@ final String flareURL =
     "https://flare.rive.app/a/cvl/files/flare/site-animaton/embed";
 
 final String iconURL = "https://github.com/tldr-pages";
-final String appURL = "https://github.com/Techno-Disaster";
+final String appURL = "https://github.com/Techno-Disaster/tldr-flutter";
 
 final String baseURL = "https://github.com/tldr-pages/tldr/blob/master/pages/";
 
