@@ -53,3 +53,7 @@ vendor/
 android/console_fastlane.json
 key.jks
 key.properties
+
+
+.fvm/
+.vscode/
