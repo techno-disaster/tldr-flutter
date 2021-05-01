@@ -29,7 +29,6 @@ dependencies:
   url_launcher: ^6.0.3
   flappy_search_bar_fork: ^1.7.4
   google_fonts: ^2.0.0
-  animated_text_kit: ^4.2.1
   flare_flutter: ^3.0.0
   flutter_bloc: ^7.0.0
   equatable: ^2.0.0
