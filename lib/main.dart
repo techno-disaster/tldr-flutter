@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return Material(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'tldr man-pages',
         theme: ThemeData(
           accentColor: Color(0xff2e8fff),
           backgroundColor: Color(0xff17181c),
