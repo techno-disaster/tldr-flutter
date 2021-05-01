@@ -9,6 +9,7 @@ import 'package:tldr/command/models/command.dart';
 import 'package:tldr/remote/requests.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:tldr/screens/recents_screen.dart';
 import 'package:tldr/utils/constants.dart';
 import 'package:tldr/utils/favorites_tile.dart';
 import 'package:tldr/utils/recents_tile.dart';
@@ -108,6 +109,14 @@ class _TLDRState extends State<TLDR> {
               },
             ),
             ListTile(
+              title: Text('All commands'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, allCommandsPage,
+                    arguments: commands);
+              },
+            ),
+            ListTile(
               title: Text('About app'),
               onTap: () {
                 Navigator.pop(context);
@@ -141,20 +150,21 @@ class _TLDRState extends State<TLDR> {
             SizedBox(
               height: 12,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Hero(
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Hero(
                     transitionOnUserGestures: true,
                     tag: "search-bar",
                     child: SearchButton(
                       commands: commands,
                     ),
                   ),
-                ),
-              ],
+                  RandomButton(commands: commands),
+                ],
+              ),
             ),
             BlocBuilder<CommandBloc, CommandState>(
               builder: (context, state) {
@@ -183,6 +193,65 @@ class _TLDRState extends State<TLDR> {
   }
 }
 
+class RandomButton extends StatelessWidget {
+  final List<Command> commands;
+
+  const RandomButton({Key? key, required this.commands}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return MaterialButton(
+      onPressed: () {
+        Command command = (commands.toList()..shuffle()).first;
+        Navigator.push(
+          context,
+          createCommandDetailsRoute(command),
+        );
+        Command c = Command(
+          name: command.name,
+          platform: command.platform,
+          dateTime: DateTime.now(),
+        );
+        BlocProvider.of<CommandBloc>(context).add(
+          AddToHistory(c),
+        );
+        BlocProvider.of<CommandBloc>(context).add(
+          GetFromHistory(),
+        );
+      },
+      child: SizedBox(
+        width: 120,
+        height: 45,
+        child: Row(
+          children: [
+            Icon(
+              Icons.shuffle,
+              color: Theme.of(context).accentColor,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text(
+              "Random",
+              style: GoogleFonts.roboto(
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).accentColor,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      color: Color(0xff2e2f37),
+    );
+  }
+}
+
 class SearchButton extends StatelessWidget {
   final List<Command> commands;
 
@@ -196,7 +265,7 @@ class SearchButton extends StatelessWidget {
       ),
       color: Color(0xff2e2f37),
       child: SizedBox(
-        width: 200,
+        width: 120,
         height: 45,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -209,7 +278,7 @@ class SearchButton extends StatelessWidget {
               width: 10,
             ),
             Text(
-              "Search ",
+              "Search",
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontWeight: FontWeight.w500,
@@ -217,22 +286,6 @@ class SearchButton extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
-            ),
-            TypewriterAnimatedTextKit(
-              onTap: () => Navigator.pushNamed(
-                context,
-                searchPage,
-                arguments: commands,
-              ),
-              speed: Duration(milliseconds: 200),
-              isRepeatingAnimation: false,
-              text: ["tldr_____"],
-              textStyle: TextStyle(
-                color: Theme.of(context).accentColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.start,
             ),
           ],
         ),

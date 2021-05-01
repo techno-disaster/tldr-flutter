@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = SimpleBlocObserver();
   final appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir!.path);
+  Hive.init(appDocumentDir.path);
   Hive.registerAdapter(CommandAdapter());
   await Hive.openBox(RECENT_COMMANDS);
   await Hive.openBox(FAVORITE_COMMANDS);
@@ -54,7 +54,7 @@ class SimpleBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stackTrace) {
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     print('${bloc.runtimeType} $error $stackTrace');
     super.onError(bloc, error, stackTrace);
   }

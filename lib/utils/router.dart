@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/screens/about_app.dart';
+import 'package:tldr/screens/all_commands_screen.dart';
 import 'package:tldr/screens/command_details.dart';
 import 'package:tldr/screens/favorites_screen.dart';
 import 'package:tldr/screens/recents_screen.dart';
@@ -38,6 +39,14 @@ class RouteGenerator {
           settings: RouteSettings(name: settings.name),
           builder: (_) => FavoritesScreen(),
         );
+      case allCommandsPage:
+        final List<Command> commands = settings.arguments as List<Command>;
+        return MaterialPageRoute<void>(
+          settings: RouteSettings(name: settings.name),
+          builder: (_) => AllCommandsScreen(
+            commands: commands,
+          ),
+        );
       default:
         return MaterialPageRoute<void>(
           settings: RouteSettings(name: settings.name),
@@ -54,3 +63,4 @@ const searchPage = '/searchPage';
 const aboutPage = '/aboutPage';
 const favoritesPage = '/favoritesPage';
 const recentsPage = '/recentsPage';
+const allCommandsPage = '/allCommandsPage';
