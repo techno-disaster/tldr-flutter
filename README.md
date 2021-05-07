@@ -75,7 +75,7 @@ Jayesh Nirve
 
 ### Thanks
 
-* [tldr pages](https://github.com/tldr-pages/tldr) for the logo.
+* [tldr-pages](https://github.com/tldr-pages/tldr) for command documentation and logo
 * [Hotpot.ai](https://github.com/HotpotDesign) for the screenshot templates and graphics generator
 * [Cas van Luijtelaar](https://flare.rive.app/a/cvl/files/flare/site-animaton/embed) for the flare url
 
