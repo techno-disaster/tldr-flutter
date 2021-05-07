@@ -17,7 +17,7 @@ jobs:
             - libstdc++6
             - fonts-droid
       before_install:
-        - yes | sdkmanager "platform;android-29"
+        - yes | sudo sdkmanager --licenses
       install:
         - sudo apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6 > /dev/null
         - git clone https://github.com/flutter/flutter.git -b stable
