@@ -1,25 +1,33 @@
-language: android
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-28.0.3
-    - android-29
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - libstdc++6
-      - fonts-droid
-before_install:
-  - echo "yes | sudo sdkmanager --licenses"
-install:
-  - sudo apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6 > /dev/null
-  - git clone https://github.com/flutter/flutter.git -b stable
-  - export PATH=$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH
-  - flutter doctor
-  - gem install bundler
-  - cd android && bundler install && cd ..
-script:
-  - if ["$TRAVIS_BRANCH" == "master"]; then ./deploy/android.sh; fi
+jobs:
+  include:
+    - stage: deploy
+    - os: linux
+      name: Android
+      language: android
+      android:
+        components:
+          - tools
+          - platform-tools
+          - build-tools-28.0.3
+          - android-29
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - libstdc++6
+            - fonts-droid
+      before_install:
+        - echo "yes | sudo sdkmanager --licenses"
+      install:
+        - sudo apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6 > /dev/null
+        - git clone https://github.com/flutter/flutter.git -b stable
+        - export PATH=$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH
+        - flutter doctor
+        - gem install bundler
+        - cd android && bundler install && cd ..
+      script:
+        - ./deploy/android.sh
+stages:
+  - name: deploy
+    if: type = push AND branch = master
