@@ -26,4 +26,5 @@ jobs:
         - gem install bundler
         - cd android && bundler install && cd ..
       script:
+        - sudo chmod 777 ./deploy/android.sh
         - ./deploy/android.sh
