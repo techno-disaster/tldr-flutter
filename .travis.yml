@@ -29,3 +29,4 @@ jobs:
 				- if ["$TRAVIS_BRANCH" == "master"]; then ./deploy/android.sh; fi
 		
   
+  
