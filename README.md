@@ -34,7 +34,7 @@ It certainly doesn't help that the first option explained in man tar is:
 -b blocksize
 Specify the block size, in 512-byte records, for tape drive I/O.
 ```
- 
+
 This app is just that: an ever-growing collection of examples for the most common UNIX, Linux, macOS, SunOS and Windows command-line tools.
 
 ## Screenshots
@@ -46,8 +46,8 @@ This app is just that: an ever-growing collection of examples for the most commo
 ## Todo
 
 - [ ] Search func is kind of broken right now, searching for `git add` gives no result, it needs `git-add`.
-- [ ] Multi-language support, more info [here](https://github.com/tldr-pages/tldr/blob/master/CLIENT-SPECIFICATION.md#language)
-- [ ] Show datetime when commands list was last updated. 
+- [ ] Multi-language support, more info [here](https://github.com/tldr-pages/tldr/blob/main/CLIENT-SPECIFICATION.md#language)
+- [ ] Show datetime when commands list was last updated.
 - [ ] Better ci/cd `-currently on hold`
   - [ ] Add travis with fastlane.
   - [ ] Integrate github releases in the same travis script
@@ -75,4 +75,3 @@ Currently open to all contributions. Hit those issue and PR buttons.
 ## Copyright and license
 
 Code released under the [MIT License](https://github.com/Techno-Disaster/tldr-flutter/blob/master/LICENSE).
-

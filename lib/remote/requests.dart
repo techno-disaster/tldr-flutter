@@ -8,7 +8,7 @@ class TldrBackend {
     final Uri commandsUrl = Uri.https(
       'raw.githubusercontent.com',
       '/Techno-Disaster/tldr-flutter/master/tldrdict/static/commands.txt',
-    ); // its useless don't waste your time
+    );
     Map<String, dynamic> data = {};
     try {
       http.Response response = await http.get(commandsUrl);
@@ -23,7 +23,7 @@ class TldrBackend {
 
   Future<String> details(Command command) async {
     final Uri commandDetailsUrl = Uri.https('raw.githubusercontent.com',
-        '/tldr-pages/tldr/master/pages/${command.platform}/${command.name}.md');
+        '/tldr-pages/tldr/main/pages/${command.platform}/${command.name}.md');
     String details = "";
     try {
       http.Response response = await http.get(commandDetailsUrl);
