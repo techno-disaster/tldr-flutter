@@ -8,7 +8,7 @@ class TldrBackend {
     final Uri commandsUrl = Uri.https(
       'raw.githubusercontent.com',
       '/Techno-Disaster/tldr-flutter/master/tldrdict/static/commands.txt',
-    ); // it's useless don't waste your time
+    );
     Map<String, dynamic> data = {};
     try {
       http.Response response = await http.get(commandsUrl);
