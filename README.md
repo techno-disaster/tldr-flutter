@@ -14,11 +14,10 @@
 
 - [Overview](#overview)
 - [Screenshots](#screenshots)
-- [CI](#CI)
+- [Todo](#todo)
 - [Build and run](#build-and-run)
 - [Bugs and feature requests](#bugs-and-feature-requests)
 - [Contributing](#contributing)
-- [Creators](#creators)
 - [Copyright and license](#copyright-and-license)
 
 ## Overview
@@ -44,11 +43,14 @@ This app is just that: an ever-growing collection of examples for the most commo
 |---|---|---|---|---|
 
 
-### CI
+## Todo
 
-#### TODO:
-- [ ] Add travis with fastlane here
-- [ ] Integrate github releases in the same travis script
+- [ ] Search func is kind of broken right now, searching for `git add` gives no result, it needs `git-add`.
+- [ ] Multi-language support, more info [here](https://github.com/tldr-pages/tldr/blob/master/CLIENT-SPECIFICATION.md#language)
+- [ ] Show datetime when commands list was last updated. 
+- [ ] Better ci/cd `-currently on hold`
+  - [ ] Add travis with fastlane.
+  - [ ] Integrate github releases in the same travis script
 
 ## Build and run
 * Assuming this is your first project, install [flutter](https://flutter.dev/docs/get-started/install)
@@ -64,19 +66,10 @@ This app is just that: an ever-growing collection of examples for the most commo
 
 Currently open to all contributions. Hit those issue and PR buttons.
 
-## Creators
-Jayesh Nirve
-- <https://github.com/Techno-Disaster>
-- <https://technodisaster.wtf>
-
-<a href='https://ko-fi.com/T6T23OMP7' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
-#### Or just use the sponser button on Github
-
 ### Thanks
 
 * [tldr-pages](https://github.com/tldr-pages/tldr) for command documentation and logo
-* [Hotpot.ai](https://github.com/HotpotDesign) for the screenshot templates and graphics generator
+* [Hotpot.ai](https://github.com/HotpotDesign) for the screenshot templates and graphics generatorw
 * [Cas van Luijtelaar](https://flare.rive.app/a/cvl/files/flare/site-animaton/embed) for the flare url
 
 ## Copyright and license
