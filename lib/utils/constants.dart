@@ -18,7 +18,7 @@ final String flareURL =
 final String iconURL = "https://github.com/tldr-pages";
 final String appURL = "https://github.com/Techno-Disaster/tldr-flutter";
 
-final String baseURL = "https://github.com/tldr-pages/tldr/blob/master/pages/";
+final String baseURL = "https://github.com/tldr-pages/tldr/blob/main/pages/";
 
 String formatDuration(Duration d) {
   var seconds = d.inSeconds;
