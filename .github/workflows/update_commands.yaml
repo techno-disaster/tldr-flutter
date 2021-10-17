@@ -28,7 +28,7 @@ jobs:
         run: |
           cd tldrdict
           python update.py
-          update_pages.sh
+          ./update_pages.sh
 
       - name: setup git config
         run: |
