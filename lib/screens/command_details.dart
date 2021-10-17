@@ -65,7 +65,8 @@ class _CommandDetailsState extends State<CommandDetails> {
                       MarkdownWidget(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        data: details,
+                        data: details ??
+                            'No details found, this should never happen please file a bug report [here](https://github.com/Techno-Disaster/tldr-flutter/issues)',
                         childMargin: EdgeInsets.all(10),
                         loadingWidget: Center(
                           child: CircularProgressIndicator(),
@@ -108,7 +109,9 @@ class _CommandDetailsState extends State<CommandDetails> {
                               Text(
                                 "Edit this page on Github",
                                 style: TextStyle(
-                                    color: Theme.of(context).accentColor),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                               ),
                             ],
                           ),

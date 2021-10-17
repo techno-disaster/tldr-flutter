@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:tldr/command/models/command.dart';
@@ -32,11 +33,19 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'tldr man-pages',
         theme: ThemeData(
-          accentColor: Color(0xff2e8fff),
           backgroundColor: Color(0xff17181c),
           canvasColor: Color(0xff17181c),
-          brightness: Brightness.dark,
           visualDensity: VisualDensity.adaptivePlatformDensity,
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            secondary: Color(0xff2e8fff),
+            brightness: Brightness.dark,
+          ),
+          appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.light,
+            titleTextStyle: TextStyle(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
         ),
         home: TLDR(),
         onGenerateRoute: RouteGenerator.generateRoute,

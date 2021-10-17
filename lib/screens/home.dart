@@ -1,8 +1,12 @@
 import 'dart:collection';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:archive/archive.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tldr/command/bloc/command_bloc.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/remote/requests.dart';
@@ -13,6 +17,7 @@ import 'package:tldr/utils/recents_tile.dart';
 import 'package:tldr/utils/router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class TLDR extends StatefulWidget {
   @override
@@ -32,7 +37,69 @@ class _TLDRState extends State<TLDR> {
     super.initState();
   }
 
+  downloadFile(String url, {required String filename}) async {
+    var httpClient = http.Client();
+    var request = new http.Request('GET', Uri.parse(url));
+    var response = httpClient.send(request);
+    String dir = (await getExternalStorageDirectory())!.path;
+
+    List<List<int>> chunks = [];
+    int downloaded = 0;
+
+    response.asStream().listen((http.StreamedResponse r) {
+      r.stream.listen((List<int> chunk) {
+        // Display percentage of completion
+        // debugPrint('downloadPercentage: ${downloaded / r.contentLength * 100}');
+
+        chunks.add(chunk);
+        downloaded += chunk.length;
+      }, onDone: () async {
+        // Display percentage of completion
+        //debugPrint('downloadPercentage: ${downloaded / r.contentLength * 100}');
+
+        // Save the file
+        File file = new File('$dir/$filename');
+        final Uint8List bytes = Uint8List(r.contentLength!);
+        int offset = 0;
+        for (List<int> chunk in chunks) {
+          bytes.setRange(offset, offset + chunk.length, chunk);
+          offset += chunk.length;
+        }
+        print(file.absolute);
+        await file.writeAsBytes(bytes);
+        final zipFile = File("$dir/$filename");
+        try {
+          // Read the Zip file from disk.
+          final bytes = zipFile.readAsBytesSync();
+
+          // Decode the Zip file
+          final archive = ZipDecoder().decodeBytes(bytes);
+          print(dir);
+          // Extract the contents of the Zip archive to disk.
+          for (final file in archive) {
+            final filename = file.name;
+            if (file.isFile) {
+              final data = file.content as List<int>;
+              File(dir + '/out/' + filename)
+                ..createSync(recursive: true)
+                ..writeAsBytesSync(data);
+            } else {
+              Directory(dir + '/' + filename).create(recursive: true);
+            }
+          }
+        } catch (e) {
+          print(e);
+        }
+        return;
+      });
+    });
+  }
+
   void getCommands() async {
+    print('hjere');
+    downloadFile("http://transfer.sh/get/1O2dag/pages.zip",
+        filename: "pages.zip");
+    print('hjesadfdre');
     var data = await api.commands();
     setState(() {
       commands = data.entries
@@ -222,7 +289,7 @@ class RandomButton extends StatelessWidget {
           children: [
             Icon(
               Icons.shuffle,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             SizedBox(
               width: 10,
@@ -232,7 +299,7 @@ class RandomButton extends StatelessWidget {
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontSize: 18,
                 ),
               ),
@@ -269,7 +336,7 @@ class SearchButton extends StatelessWidget {
           children: [
             Icon(
               Icons.search,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             SizedBox(
               width: 10,
@@ -279,7 +346,7 @@ class SearchButton extends StatelessWidget {
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontSize: 18,
                 ),
               ),
@@ -315,7 +382,7 @@ class AboutTldrText extends StatelessWidget {
                 );
               },
             style: TextStyle(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           TextSpan(
@@ -330,7 +397,7 @@ class AboutTldrText extends StatelessWidget {
                 );
               },
             style: TextStyle(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           TextSpan(
