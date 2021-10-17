@@ -51,6 +51,7 @@ android {
     }
     signingConfigs {
        release {
+           storeFile file('/home/techno_disaster/td.keystore')
            keyAlias keystoreProperties['keyAlias']
            keyPassword keystoreProperties['keyPassword']
            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
