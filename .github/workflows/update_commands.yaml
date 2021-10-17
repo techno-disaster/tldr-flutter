@@ -28,6 +28,7 @@ jobs:
         run: |
           cd tldrdict
           python update.py
+          update_pages.sh
 
       - name: setup git config
         run: |
@@ -36,5 +37,4 @@ jobs:
 
       - name: commit changes
         run: |
-          chmod +x ./tldrdict/commit.sh
           ./tldrdict/commit.sh
