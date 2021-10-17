@@ -88,7 +88,7 @@ class AboutApp extends StatelessWidget {
                         Text(
                           "View this app on Github",
                           style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                              TextStyle(color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
@@ -129,7 +129,7 @@ class AboutApp extends StatelessWidget {
                                   launch(flareURL);
                                 },
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ],
@@ -152,7 +152,7 @@ class AboutApp extends StatelessWidget {
                                   launch(iconURL);
                                 },
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ),
                           ],

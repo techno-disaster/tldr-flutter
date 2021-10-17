@@ -20,19 +20,22 @@ class TLDR extends StatefulWidget {
 }
 
 class _TLDRState extends State<TLDR> {
+  String currentVersion = '';
   TldrBackend api = TldrBackend();
   List<Command> commands = [];
   List<Command> suggestions = [];
 
   @override
   void initState() {
-    getCommands();
+    getCommandsAndPages();
     BlocProvider.of<CommandBloc>(context).add(AppOpened());
-
     super.initState();
   }
 
-  void getCommands() async {
+  void getCommandsAndPages() async {
+    String version = await api.version();
+    currentVersion = version;
+    api.downloadPages(version);
     var data = await api.commands();
     setState(() {
       commands = data.entries
@@ -64,9 +67,10 @@ class _TLDRState extends State<TLDR> {
       ),
       drawer: Drawer(
         elevation: 0,
-        child: ListView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
           // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
+          // padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
               height: 200,
@@ -122,6 +126,36 @@ class _TLDRState extends State<TLDR> {
                   createAboutPageRoute(),
                 );
               },
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text:
+                                'Current version: $currentVersion should match ',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          TextSpan(
+                            text: 'here',
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launch(
+                                  'https://github.com/Techno-Disaster/tldr-flutter/blob/master/tldrdict/static/version.txt',
+                                );
+                              },
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
             ),
           ],
         ),
@@ -222,7 +256,7 @@ class RandomButton extends StatelessWidget {
           children: [
             Icon(
               Icons.shuffle,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             SizedBox(
               width: 10,
@@ -232,7 +266,7 @@ class RandomButton extends StatelessWidget {
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontSize: 18,
                 ),
               ),
@@ -269,7 +303,7 @@ class SearchButton extends StatelessWidget {
           children: [
             Icon(
               Icons.search,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             SizedBox(
               width: 10,
@@ -279,7 +313,7 @@ class SearchButton extends StatelessWidget {
               style: GoogleFonts.roboto(
                 textStyle: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   fontSize: 18,
                 ),
               ),
@@ -315,7 +349,7 @@ class AboutTldrText extends StatelessWidget {
                 );
               },
             style: TextStyle(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           TextSpan(
@@ -330,7 +364,7 @@ class AboutTldrText extends StatelessWidget {
                 );
               },
             style: TextStyle(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
           TextSpan(
