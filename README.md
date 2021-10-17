@@ -14,7 +14,6 @@
 
 - [Overview](#overview)
 - [Screenshots](#screenshots)
-- [Todo](#todo)
 - [Build and run](#build-and-run)
 - [Bugs and feature requests](#bugs-and-feature-requests)
 - [Contributing](#contributing)
@@ -41,16 +40,6 @@ This app is just that: an ever-growing collection of examples for the most commo
 
 |![](android/fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png)|![](android/fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png)|![](android/fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png)|![](android/fastlane/metadata/android/en-US/images/phoneScreenshots/4_en-US.png)|![](android/fastlane/metadata/android/en-US/images/phoneScreenshots/5_en-US.png)|
 |---|---|---|---|---|
-
-
-## Todo
-
-- [ ] Search func is kind of broken right now, searching for `git add` gives no result, it needs `git-add`.
-- [ ] Multi-language support, more info [here](https://github.com/tldr-pages/tldr/blob/main/CLIENT-SPECIFICATION.md#language)
-- [ ] Show datetime when commands list was last updated.
-- [ ] Better ci/cd `-currently on hold`
-  - [ ] Add travis with fastlane.
-  - [ ] Integrate github releases in the same travis script
 
 ## Build and run
 * Assuming this is your first project, install [flutter](https://flutter.dev/docs/get-started/install)
