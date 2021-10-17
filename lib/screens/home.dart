@@ -199,7 +199,7 @@ class _TLDRState extends State<TLDR> {
             ),
             BlocBuilder<CommandBloc, CommandState>(
               builder: (context, state) {
-                if (state is CommandState) {
+               
                   state.recentCommands
                       .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
                   state.favoriteCommands
@@ -212,9 +212,8 @@ class _TLDRState extends State<TLDR> {
                       RecentsList(recentCommands: state.recentCommands),
                     ],
                   );
-                }
+                
 
-                return Container();
               },
             ),
           ],

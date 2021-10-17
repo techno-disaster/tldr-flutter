@@ -16,36 +16,33 @@ class FavoritesTile extends StatelessWidget {
             .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
         List<Command> favoriteCommands =
             state.favoriteCommands.reversed.toList();
-        if (state is CommandState) {
-          return ListTile(
-            onTap: () {
-              Navigator.push(
-                context,
-                createCommandDetailsRoute(
-                  favoriteCommands[index],
-                ),
-              );
-              Command c = Command(
-                  name: favoriteCommands[index].name,
-                  platform: favoriteCommands[index].platform,
-                  dateTime: DateTime.now());
-              BlocProvider.of<CommandBloc>(context).add(
-                AddToHistory(c),
-              );
-              BlocProvider.of<CommandBloc>(context).add(
-                GetFromHistory(),
-              );
-            },
-            leading: Icon(
-              Icons.code,
-              color: Colors.blueAccent,
-            ),
-            title: Text(favoriteCommands[index].name),
-            subtitle: Text(favoriteCommands[index].platform),
-            trailing: getIcon(context, favoriteCommands[index]),
-          );
-        }
-        return Container();
+        return ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              createCommandDetailsRoute(
+                favoriteCommands[index],
+              ),
+            );
+            Command c = Command(
+                name: favoriteCommands[index].name,
+                platform: favoriteCommands[index].platform,
+                dateTime: DateTime.now());
+            BlocProvider.of<CommandBloc>(context).add(
+              AddToHistory(c),
+            );
+            BlocProvider.of<CommandBloc>(context).add(
+              GetFromHistory(),
+            );
+          },
+          leading: Icon(
+            Icons.code,
+            color: Colors.blueAccent,
+          ),
+          title: Text(favoriteCommands[index].name),
+          subtitle: Text(favoriteCommands[index].platform),
+          trailing: getIcon(context, favoriteCommands[index]),
+        );
       },
     );
   }

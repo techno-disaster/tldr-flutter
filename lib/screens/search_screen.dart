@@ -24,8 +24,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<List<Command>> getSuggestions(String text) async {
     suggestions.addAll(widget.commands);
-    suggestions.retainWhere(
-        (element) => element.name.toLowerCase().startsWith(text.toLowerCase()));
+    suggestions.retainWhere((element) => element.name
+        .toLowerCase()
+        .replaceAll('-', '')
+        .startsWith(text.replaceAll(' ', '').toLowerCase()));
     suggestions = LinkedHashSet<Command>.from(suggestions)
         .toList(); // remove repeated elements due to repeated addAll more info: https://api.dart.dev/stable/2.4.0/dart-collection/LinkedHashSet/LinkedHashSet.from.html
     return suggestions;
@@ -101,19 +103,14 @@ class _SearchScreenState extends State<SearchScreen> {
                     ? Container()
                     : BlocBuilder<CommandBloc, CommandState>(
                         builder: (context, state) {
-                          if (state is CommandState) {
-                            return ListTile(
-                                tileColor: Color(
-                                  0xff17181c,
-                                ),
-                                title: Text(suggestion.name),
-                                subtitle: Text(suggestion.platform),
-                                trailing: getIcon(
-                                    _scaffoldKey.currentContext!, suggestion));
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return ListTile(
+                              tileColor: Color(
+                                0xff17181c,
+                              ),
+                              title: Text(suggestion.name),
+                              subtitle: Text(suggestion.platform),
+                              trailing: getIcon(
+                                  _scaffoldKey.currentContext!, suggestion));
                         },
                       );
               },

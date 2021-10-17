@@ -143,3 +143,15 @@ Widget getIcon(BuildContext context, Command command) {
     ),
   );
 }
+
+class MyIcons {
+  MyIcons._();
+  static const _kFontFam = 'icons';
+  static const String? _kFontPkg = null;
+  static const IconData linux_1 =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData windows =
+      IconData(0xf17a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData app_store_ios =
+      IconData(0xf370, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+}

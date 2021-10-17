@@ -14,7 +14,6 @@ class RecentsTile extends StatelessWidget {
       builder: (context, state) {
         state.recentCommands.sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
         List<Command> recentCommands = state.recentCommands.reversed.toList();
-        if (state is CommandState) {
           return ListTile(
             onTap: () {
               Navigator.push(
@@ -49,8 +48,7 @@ class RecentsTile extends StatelessWidget {
               style: TextStyle(color: Colors.grey),
             ),
           );
-        }
-        return Container();
+       
       },
     );
   }

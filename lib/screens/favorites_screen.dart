@@ -14,40 +14,35 @@ class FavoritesScreen extends StatelessWidget {
         backgroundColor: Color(0xff17181c),
       ),
       body: BlocBuilder<CommandBloc, CommandState>(builder: (context, state) {
-        if (state is CommandState) {
-          return state.favoriteCommands.isNotEmpty
-              ? ListView.separated(
-                  physics: BouncingScrollPhysics(),
-                  itemCount: state.favoriteCommands.length,
-                  itemBuilder: (context, index) {
-                    return FavoritesTile(index: index);
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                )
-              : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.code,
-                        color: Colors.blueAccent,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Your favorite commands will appear here",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ],
-                  ),
-                );
-        }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return state.favoriteCommands.isNotEmpty
+            ? ListView.separated(
+                physics: BouncingScrollPhysics(),
+                itemCount: state.favoriteCommands.length,
+                itemBuilder: (context, index) {
+                  return FavoritesTile(index: index);
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              )
+            : Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.code,
+                      color: Colors.blueAccent,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Your favorite commands will appear here",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              );
       }),
     );
   }
