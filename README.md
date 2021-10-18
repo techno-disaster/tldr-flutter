@@ -10,6 +10,11 @@
   </p>
 </p>
 
+[![GitHub All Releases](https://img.shields.io/github/downloads/Techno-Disaster/tldr-flutter/total.svg)](https://github.com/Techno-Disaster/tldr-flutter/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![bloc](https://img.shields.io/badge/flutter-bloc-blue)](https://github.com/felangel/bloc)
+
+
 ## Table of contents
 
 - [Overview](#overview)
