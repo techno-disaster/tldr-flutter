@@ -26,23 +26,25 @@ class TldrBackend {
     return data;
   }
 
-  Future<String> version() async {
+  Future<List<String>> getVersionAndLastUpdateDateTime() async {
     final Uri getVersionURI = Uri.https(
       'raw.githubusercontent.com',
       '/Techno-Disaster/tldr-flutter/master/tldrdict/static/version.txt',
     );
     Map<String, dynamic> data;
     String version = '';
+    String datetime = '';
     try {
       http.Response response = await http.get(getVersionURI);
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
         version = data['version']!;
+        datetime = data['lastUpdatedAt']!;
       }
     } on Exception catch (e) {
       print(e);
     }
-    return version;
+    return [version, datetime];
   }
 
   Future<String> details(Command command) async {

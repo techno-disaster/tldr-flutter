@@ -21,6 +21,7 @@ class TLDR extends StatefulWidget {
 
 class _TLDRState extends State<TLDR> {
   String currentVersion = '';
+  String dateTime = DateTime.now().toString();
   TldrBackend api = TldrBackend();
   List<Command> commands = [];
   List<Command> suggestions = [];
@@ -33,9 +34,11 @@ class _TLDRState extends State<TLDR> {
   }
 
   void getCommandsAndPages() async {
-    String version = await api.version();
-    currentVersion = version;
-    api.downloadPages(version);
+    List<String> versionAndDateTime =
+        await api.getVersionAndLastUpdateDateTime();
+    currentVersion = versionAndDateTime.first;
+    dateTime = versionAndDateTime.last;
+    api.downloadPages(currentVersion);
     var data = await api.commands();
     setState(() {
       commands = data.entries
@@ -137,6 +140,11 @@ class _TLDRState extends State<TLDR> {
                         children: [
                           TextSpan(
                             text:
+                                'Last updated at: ${DateFormat("dd-MM-yyyy H:mm").format(DateTime.parse(dateTime))} UTC\n',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          TextSpan(
+                            text:
                                 'Current version: $currentVersion should match ',
                             style: TextStyle(color: Colors.grey),
                           ),
@@ -199,21 +207,18 @@ class _TLDRState extends State<TLDR> {
             ),
             BlocBuilder<CommandBloc, CommandState>(
               builder: (context, state) {
-               
-                  state.recentCommands
-                      .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
-                  state.favoriteCommands
-                      .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
-                  return Column(
-                    children: [
-                      FavoritesList(
-                        favoritesList: state.favoriteCommands,
-                      ),
-                      RecentsList(recentCommands: state.recentCommands),
-                    ],
-                  );
-                
-
+                state.recentCommands
+                    .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+                state.favoriteCommands
+                    .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+                return Column(
+                  children: [
+                    FavoritesList(
+                      favoritesList: state.favoriteCommands,
+                    ),
+                    RecentsList(recentCommands: state.recentCommands),
+                  ],
+                );
               },
             ),
           ],
