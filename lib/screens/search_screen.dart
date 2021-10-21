@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+
 import 'package:tldr/command/bloc/command_bloc.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/screens/command_details.dart';

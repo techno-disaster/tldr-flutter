@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
+import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:tldr/command/bloc/command_bloc.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/utils/commands_tile.dart';
 import 'package:tldr/utils/constants.dart';
-import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
 class AllCommandsScreen extends StatefulWidget {
   final List<Command> commands;

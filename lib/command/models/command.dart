@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+
 part 'command.g.dart';
 
 @HiveType(typeId: 0)

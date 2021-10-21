@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:tldr/command/bloc/command_bloc.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/remote/requests.dart';
 import 'package:tldr/utils/constants.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CommandDetails extends StatefulWidget {
   final Command command;

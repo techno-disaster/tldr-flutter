@@ -1,18 +1,21 @@
 import 'dart:collection';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:tldr/command/bloc/command_bloc.dart';
 import 'package:tldr/command/models/command.dart';
 import 'package:tldr/remote/requests.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:tldr/utils/constants.dart';
 import 'package:tldr/utils/favorites_tile.dart';
 import 'package:tldr/utils/recents_tile.dart';
 import 'package:tldr/utils/router.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
 
 class TLDR extends StatefulWidget {
   @override

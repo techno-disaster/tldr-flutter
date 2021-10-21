@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown_widget/markdown_widget.dart';
-import 'package:tldr/utils/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:tldr/utils/constants.dart';
 
 class AboutApp extends StatelessWidget {
   @override
@@ -71,11 +73,10 @@ class AboutApp extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     color: Color(0xff2e2f37),
-                    onPressed: () =>
-                        _launchUrl(appURL), 
+                    onPressed: () => _launchUrl(appURL),
                     child: Row(
                       children: [
-                        Container(  
+                        Container(
                           height: 20,
                           width: 20,
                           child: Image.asset(
@@ -87,8 +88,8 @@ class AboutApp extends StatelessWidget {
                         ),
                         Text(
                           "View this app on Github",
-                          style:
-                              TextStyle(color: Theme.of(context).colorScheme.secondary),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ],
                     ),
