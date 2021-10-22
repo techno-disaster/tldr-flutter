@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://technodisaster.wtf/">
+  <a href="https://technodisaster.com/">
     <img src="android/fastlane/metadata/android/en-US/images/featureGraphic.png" >
   </a>
 
