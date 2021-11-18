@@ -13,7 +13,7 @@ import 'command/bloc/command_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = SimpleBlocObserver();
+  BlocOverrides.runZoned(() {}, blocObserver: SimpleBlocObserver());
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(CommandAdapter());
