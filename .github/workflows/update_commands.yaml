@@ -30,11 +30,6 @@ jobs:
           python update.py
           ./update_pages.sh
 
-      - name: setup git config
-        run: |
-          git config user.name ${{ secrets.USERNAME }}
-          git config user.email ${{ secrets.EMAIL }}
-
       - name: commit changes
         run: |
           ./tldrdict/commit.sh
