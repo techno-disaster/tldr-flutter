@@ -79,7 +79,11 @@ class TldrBackend {
     if (!paths.any(latestVerionPresent)) {
       var httpClient = http.Client();
       var request = http.Request(
-          'GET', Uri.parse("http://transfer.sh/get/$version/pages.zip"));
+          'GET',
+          Uri.https(
+            'raw.githubusercontent.com',
+            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages.zip',
+          ));
       var response = httpClient.send(request);
 
       List<List<int>> chunks = [];
