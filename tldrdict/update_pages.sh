@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd tldrdict/static
+cd static
 git clone https://github.com/tldr-pages/tldr
 zip -r pages.zip tldr/pages
 rm -rf tldr
