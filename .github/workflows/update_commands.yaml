@@ -28,6 +28,7 @@ jobs:
         run: |
           cd tldrdict
           python update.py
+          sudo apt install moreutils
           ./update_pages.sh
 
       - name: setup git config
