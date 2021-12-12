@@ -24,7 +24,7 @@ jobs:
       - name: Install Requirements
         run: pip install -r ./tldrdict/requirements.txt
 
-      - name: Execute Python script
+      - name: Execute get pages and version zips
         run: |
           cd tldrdict
           python update.py

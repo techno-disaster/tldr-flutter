@@ -60,9 +60,10 @@ class TldrBackend {
     return details;
   }
 
-  downloadPages(version) async {
+  void downloadPages(String version, {String? locale}) async {
     print(version);
-    String filename = 'pages-$version.zip';
+    String filename =
+        locale != null ? 'pages.$locale-$version/pages.$locale-$version.zip' : 'pages-$version/pages-$version.zip';
     String dir = (await getExternalStorageDirectory())!.path;
     List<FileSystemEntity> entities = await Directory(dir).list().toList();
     List<String> paths = [];
@@ -82,7 +83,7 @@ class TldrBackend {
           'GET',
           Uri.https(
             'raw.githubusercontent.com',
-            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages.zip',
+            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages_zips/pages.zip',
           ));
       var response = httpClient.send(request);
 
