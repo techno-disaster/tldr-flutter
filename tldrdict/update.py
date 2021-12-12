@@ -3,7 +3,7 @@ from os import path
 import json
 import requests
 
-
+# This is deperacted will be removed soon after I see most people update to lastest app version.
 def get_dict():
     r = requests.get(url="https://tldr.sh/assets/")
     data = json.loads(r.text)
