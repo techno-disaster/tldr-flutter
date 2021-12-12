@@ -1,7 +1,7 @@
 #!/bin/bash
 cd static
 # json format for all commands with name, languages and platform
-curl -s 'https://tldr.sh/assets/' |  jq '[.commands[] | {command: .name, languages: .language, platform: .platform[]}]' > commands2.json
+curl -s 'https://tldr.sh/assets/' |  jq '[.commands[] | {command: .name, info: .targets | group_by(.os)[] | {os: .[] | .os, languages: [.[] | .language]}}]  | unique' > commands2.json
 # add a list of all supported languages to commands2.json
 curl -s 'https://tldr.sh/assets/' |  jq '[{supportedLanguages: [.commands[] | .language | .[]] | unique}]' > temp.json && jq --slurp add commands2.json temp.json | sponge commands2.json && rm temp.json
 git clone https://github.com/tldr-pages/tldr
