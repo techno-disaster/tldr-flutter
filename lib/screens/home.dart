@@ -6,12 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:tldr/command/bloc/command_bloc.dart';
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/blocs/command_bloc/command_bloc.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/remote/requests.dart';
 import 'package:tldr/utils/constants.dart';
 import 'package:tldr/utils/favorites_tile.dart';
@@ -45,11 +44,8 @@ class _TLDRState extends State<TLDR> {
     List<String> versionAndDateTime =
         await api.getVersionAndLastUpdateDateTime();
     currentVersion = versionAndDateTime.first;
-    var box = Hive.box(PAGES_INFO_BOX);
-    box.put('version', currentVersion);
-    box.put('locale', 'ja');
     dateTime = versionAndDateTime.last;
-    api.downloadPages(currentVersion, box.get('locale'));
+    api.downloadPages(currentVersion);
     List data = await api.commands();
     setState(() {
       commands = data.map(
@@ -136,6 +132,16 @@ class _TLDRState extends State<TLDR> {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, allCommandsPage,
                     arguments: commands);
+              },
+            ),
+            ListTile(
+              title: Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(
+                  context,
+                  settingsPage,
+                );
               },
             ),
             ListTile(

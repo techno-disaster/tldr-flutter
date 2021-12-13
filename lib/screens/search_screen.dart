@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-import 'package:tldr/command/bloc/command_bloc.dart';
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/blocs/command_bloc/command_bloc.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/screens/command_details.dart';
 import 'package:tldr/utils/constants.dart';
 
@@ -75,11 +76,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 elevation: 0,
                 offsetX: -55,
                 constraints: BoxConstraints(
-                  maxHeight: 500,
+                  maxHeight: 1000,
                   minWidth: MediaQuery.of(context).size.width,
                 ),
               ),
               textFieldConfiguration: TextFieldConfiguration(
+                onEditingComplete: () {
+                  // workaround for when user hide enters suggestions hidden
+                  SystemChannels.textInput.invokeMethod('TextInput.hide');
+                },
                 controller: _controller,
                 autofocus: true,
                 decoration: InputDecoration(
@@ -106,13 +111,15 @@ class _SearchScreenState extends State<SearchScreen> {
                     : BlocBuilder<CommandBloc, CommandState>(
                         builder: (context, state) {
                           return ListTile(
-                              tileColor: Color(
-                                0xff17181c,
-                              ),
-                              title: Text(suggestion.name),
-                              subtitle: Text(suggestion.platform),
-                              trailing: getIcon(
-                                  _scaffoldKey.currentContext!, suggestion));
+                            tileColor: Color(
+                              0xff17181c,
+                            ),
+                            title: Text(suggestion.name),
+                            subtitle: Text(suggestion.platform),
+                            trailing: FavoriteIcon(
+                              command: suggestion,
+                            ),
+                          );
                         },
                       );
               },

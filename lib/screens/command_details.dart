@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:tldr/command/bloc/command_bloc.dart';
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/blocs/command_bloc/command_bloc.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/remote/requests.dart';
 import 'package:tldr/utils/constants.dart';
 
@@ -48,7 +48,7 @@ class _CommandDetailsState extends State<CommandDetails> {
           backgroundColor: Color(0xff2e2f37),
           onPressed: () =>
               print("command_details_fab"), //on pressed handled in child
-          child: getIcon(context, widget.command),
+          child: FavoriteIcon(command: widget.command),
         ),
         appBar: AppBar(
           backgroundColor: Color(0xff17181c),

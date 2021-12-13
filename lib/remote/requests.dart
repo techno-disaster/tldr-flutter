@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/utils/constants.dart';
 
 class TldrBackend {
@@ -37,16 +37,21 @@ class TldrBackend {
     Map<String, dynamic> data;
     String version = '';
     String datetime = '';
+    List? supportedLanguages;
     try {
       http.Response response = await http.get(getVersionURI);
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
-        version = data['version']!;
-        datetime = data['lastUpdatedAt']!;
+        version = data['version'];
+        datetime = data['lastUpdatedAt'];
+        supportedLanguages = data['supportedLanguages'];
       }
     } on Exception catch (e) {
       print(e);
     }
+    var box = Hive.box(PAGES_INFO_BOX);
+    box.put('version', version);
+    box.put('supportedLanguages', supportedLanguages);
     return [version, datetime];
   }
 
@@ -58,7 +63,7 @@ class TldrBackend {
     String details = "";
     try {
       details = File(
-              "$dir/${locale != null && command.languages.contains(locale) ? 'pages.$locale-$version' : 'pages-$version'}/tldr/${locale != null && command.languages.contains(locale) ? 'pages.$locale' : 'pages'}/${command.platform}/${command.name}.md")
+              '$dir/all-pages-$version/tldr/${locale != null && command.languages.contains(locale) ? 'pages.$locale' : 'pages'}/${command.platform}/${command.name}.md')
           .readAsStringSync();
     } on Exception catch (e) {
       print(e);
@@ -66,29 +71,23 @@ class TldrBackend {
     return details;
   }
 
-  void downloadPages(String version, String? locale) async {
+  void downloadPages(String version) async {
     String dir = (await getExternalStorageDirectory())!.path;
     Directory(dir + '/' + 'all-pages-$version').create(recursive: true);
-    String filename = locale != null ? 'pages.$locale.zip' : 'pages.zip';
+
     List<FileSystemEntity> entities = await Directory(dir).list().toList();
     List<String> paths = [];
     bool latestVerionPresent(String value) =>
         value.contains('all-pages-$version');
-// TODO
     // delete old versions and older languages
-    // entities.forEach((element) {
-    //   if (locale != null &&
-    //       !element.absolute.toString().split('/').last.contains('commands') &&
-    //       !element.absolute.toString().contains('pages-$version')) {
-    //     if (!element.absolute.toString().contains('.' + locale + '-' + version))
-    //       // delete all zips and folder which are not latest.
-    //       element.delete(recursive: true);
-    //   } else if (locale == null &&
-    //       !element.absolute.toString().contains('pages-$version')) {
-    //     element.delete(recursive: true);
-    //   } else
-    //     paths.add(element.absolute.toString());
-    // });
+    entities.forEach((element) {
+      if (!element.path.split('/').last.contains('commands') &&
+          element.path != dir + '/all-pages-$version') {
+        // delete all zips and folder which are not latest.
+        element.delete(recursive: true);
+      } else
+        paths.add(element.path);
+    });
 
     if (!paths.any(latestVerionPresent)) {
       var httpClient = http.Client();
@@ -99,43 +98,26 @@ class TldrBackend {
           'GET',
           Uri.https(
             'raw.githubusercontent.com',
-            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages_zips/',
+            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/allpages.zip',
           ));
-
-      // if (locale != null)
-      //   localePagesRequest = http.Request(
-      //       'GET',
-      //       Uri.https(
-      //         'raw.githubusercontent.com',
-      //         '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages_zips/pages.$locale.zip',
-      //       ));
-
-      zipDownloader(
+      zipDownloaderAndExtractor(
         httpClient.send(allPagesRequest),
         dir,
-        filename,
         version,
       );
-      // if (locale != null)
-      //   zipDownloader(
-      //     httpClient.send(localePagesRequest!),
-      //     dir,
-      //     localeDirectory,
-      //     filename,
-      //   );
     } else
       print('Already on latest version');
   }
 }
 
-void zipDownloader(Future<http.StreamedResponse> response, String dir,
-    String filename, String version) {
+void zipDownloaderAndExtractor(
+    Future<http.StreamedResponse> response, String dir, String version) {
   List<List<int>> chunks = [];
   response.asStream().listen((http.StreamedResponse r) {
     r.stream.listen((List<int> chunk) {
       chunks.add(chunk);
     }, onDone: () async {
-      File file = File('$dir/all-pages-$version/$filename');
+      File file = File('$dir/all-pages-$version.zip');
       final Uint8List bytes = Uint8List(r.contentLength!);
       int offset = 0;
       for (List<int> chunk in chunks) {
@@ -143,7 +125,7 @@ void zipDownloader(Future<http.StreamedResponse> response, String dir,
         offset += chunk.length;
       }
       await file.writeAsBytes(bytes);
-      final zipFile = File('$dir/all-pages-$version/$filename');
+      final zipFile = File('$dir/all-pages-$version.zip');
       try {
         // Read the Zip file from disk.
         final bytes = zipFile.readAsBytesSync();

@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/utils/constants.dart';
 
 part 'command_event.dart';

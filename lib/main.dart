@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/screens/home.dart';
 import 'package:tldr/utils/constants.dart';
 import 'package:tldr/utils/router.dart';
-import 'command/bloc/command_bloc.dart';
+import 'blocs/command_bloc/command_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:tldr/command/models/command.dart';
+import 'package:tldr/models/command.dart';
 import 'package:tldr/screens/about_app.dart';
 import 'package:tldr/screens/all_commands_screen.dart';
 import 'package:tldr/screens/command_details.dart';
 import 'package:tldr/screens/favorites_screen.dart';
 import 'package:tldr/screens/recents_screen.dart';
 import 'package:tldr/screens/search_screen.dart';
+import 'package:tldr/screens/settings_screen.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -48,6 +49,11 @@ class RouteGenerator {
             commands: commands,
           ),
         );
+      case settingsPage:
+        return MaterialPageRoute<void>(
+          settings: RouteSettings(name: settings.name),
+          builder: (_) => SettingsScreen(),
+        );
       default:
         return MaterialPageRoute<void>(
           settings: RouteSettings(name: settings.name),
@@ -65,3 +71,4 @@ const aboutPage = '/aboutPage';
 const favoritesPage = '/favoritesPage';
 const recentsPage = '/recentsPage';
 const allCommandsPage = '/allCommandsPage';
+const settingsPage = '/settings';
