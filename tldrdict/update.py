@@ -19,7 +19,7 @@ def update_commands_file():
     _ = get_dict()
     data = json.dumps(_)
     try:
-        file = open('static/commands.txt', 'wt')
+        file = open('static/commands.txt', 'wt')    
         file.write(data)
         file.close()
         print("Commands added")

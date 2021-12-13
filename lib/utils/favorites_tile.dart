@@ -27,9 +27,11 @@ class FavoritesTile extends StatelessWidget {
               ),
             );
             Command c = Command(
-                name: favoriteCommands[index].name,
-                platform: favoriteCommands[index].platform,
-                dateTime: DateTime.now());
+              name: favoriteCommands[index].name,
+              platform: favoriteCommands[index].platform,
+              dateTime: DateTime.now(),
+              languages: favoriteCommands[index].languages,
+            );
             BlocProvider.of<CommandBloc>(context).add(
               AddToHistory(c),
             );

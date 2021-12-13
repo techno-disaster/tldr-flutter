@@ -11,8 +11,13 @@ class Command extends Equatable {
   final String platform;
   @HiveField(2)
   final DateTime? dateTime;
-
-  Command({required this.name, required this.platform, this.dateTime});
+  @HiveField(3)
+  final List languages;
+  Command(
+      {required this.name,
+      required this.platform,
+      this.dateTime,
+      required this.languages});
   Command copyWith({
     String? name,
     String? platform,
@@ -21,9 +26,10 @@ class Command extends Equatable {
     return Command(
         name: name ?? this.name,
         platform: platform ?? this.platform,
-        dateTime: dateTime ?? this.dateTime);
+        dateTime: dateTime ?? this.dateTime,
+        languages: this.languages);
   }
 
   @override
-  List<Object?> get props => [name, platform, dateTime];
+  List<Object?> get props => [name, platform, dateTime, languages];
 }

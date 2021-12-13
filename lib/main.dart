@@ -19,7 +19,7 @@ void main() async {
   Hive.registerAdapter(CommandAdapter());
   await Hive.openBox(RECENT_COMMANDS);
   await Hive.openBox(FAVORITE_COMMANDS);
-  //Hive.box(FAVORITE_COMMANDS).deleteFromDisk();
+  await Hive.openBox(PAGES_INFO_BOX);
   runApp(BlocProvider(
     create: (context) => CommandBloc(),
     child: MyApp(),

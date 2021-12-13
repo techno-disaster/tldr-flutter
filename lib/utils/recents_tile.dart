@@ -25,9 +25,11 @@ class RecentsTile extends StatelessWidget {
               ),
             );
             Command c = Command(
-                name: recentCommands[index].name,
-                platform: recentCommands[index].platform,
-                dateTime: DateTime.now());
+              name: recentCommands[index].name,
+              platform: recentCommands[index].platform,
+              dateTime: DateTime.now(),
+              languages: recentCommands[index].languages,
+            );
             BlocProvider.of<CommandBloc>(context).add(
               AddToHistory(c),
             );

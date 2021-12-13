@@ -97,7 +97,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   return await getSuggestions(pattern);
                 } else
                   return [
-                    Command(name: "null", platform: "null")
+                    Command(name: "null", platform: "null", languages: ["null"])
                   ]; // bad workaround for condition when user opens search screen for first time.
               },
               itemBuilder: (context, suggestion) {
@@ -124,9 +124,11 @@ class _SearchScreenState extends State<SearchScreen> {
               onSuggestionSelected: (suggestion) {
                 Command command = suggestion as Command;
                 Command c = Command(
-                    name: command.name,
-                    platform: command.platform,
-                    dateTime: DateTime.now());
+                  name: command.name,
+                  platform: command.platform,
+                  dateTime: DateTime.now(),
+                  languages: command.languages,
+                );
                 BlocProvider.of<CommandBloc>(context).add(
                   AddToHistory(c),
                 );

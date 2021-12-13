@@ -9,7 +9,7 @@
       </intent>
     </queries>
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name="${applicationName}"
         android:label="tldr"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/launcher_icon"

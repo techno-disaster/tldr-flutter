@@ -20,19 +20,22 @@ class CommandAdapter extends TypeAdapter<Command> {
       name: fields[0] as String,
       platform: fields[1] as String,
       dateTime: fields[2] as DateTime?,
+      languages: (fields[3] as List).cast<dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Command obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.platform)
       ..writeByte(2)
-      ..write(obj.dateTime);
+      ..write(obj.dateTime)
+      ..writeByte(3)
+      ..write(obj.languages);
   }
 
   @override

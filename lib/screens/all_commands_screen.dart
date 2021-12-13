@@ -96,6 +96,7 @@ class _AllCommandsScreenState extends State<AllCommandsScreen>
               name: command.name,
               platform: command.platform,
               dateTime: DateTime.now(),
+              languages: command.languages,
             );
             BlocProvider.of<CommandBloc>(context).add(
               AddToHistory(c),

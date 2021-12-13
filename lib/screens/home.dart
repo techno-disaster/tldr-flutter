@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,21 +33,31 @@ class _TLDRState extends State<TLDR> {
   @override
   void initState() {
     getCommandsAndPages();
+
     BlocProvider.of<CommandBloc>(context).add(AppOpened());
     super.initState();
   }
 
+  // initialize TLDRBackend and get commands2.json and pages.zip
   void getCommandsAndPages() async {
     List<String> versionAndDateTime =
         await api.getVersionAndLastUpdateDateTime();
     currentVersion = versionAndDateTime.first;
+    var box = Hive.box(PAGES_INFO_BOX);
+    box.put('version', currentVersion);
     dateTime = versionAndDateTime.last;
-    api.downloadPages(currentVersion);
-    var data = await api.commands();
+    api.downloadPages(currentVersion, box.get('locale'));
+    List data = await api.commands();
     setState(() {
-      commands = data.entries
-          .map((e) => Command(name: e.key, platform: e.value))
-          .toList();
+      commands = data.map(
+        (e) {
+          return Command(
+            name: e['command'],
+            platform: e['info']['os'],
+            languages: e['info']['languages'],
+          );
+        },
+      ).toList();
     });
   }
 
@@ -248,6 +259,7 @@ class RandomButton extends StatelessWidget {
           name: command.name,
           platform: command.platform,
           dateTime: DateTime.now(),
+          languages: command.languages,
         );
         BlocProvider.of<CommandBloc>(context).add(
           AddToHistory(c),

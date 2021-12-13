@@ -40,7 +40,8 @@ dependencies:
     git: https://github.com/asjqkkkk/markdown_widget
   path_provider: ^2.0.5
   url_launcher: ^6.0.12
-
+  provider: ^6.0.1
+  
 dev_dependencies:
   import_sorter: ^4.6.0
   build_runner: ^2.1.4
