@@ -2,7 +2,7 @@
 cd static
 
 # json format for all commands with name, languages and platform
-curl -s 'https://tldr.sh/assets/'|  jq '[.commands[] | {command: .name, info: .targets | group_by(.os)[] | {os: .[] | .os, languages: [.[] | .language]}}]  | unique' > commands2.json
+curl -s 'https://tldr.sh/assets/'|  jq --compact-output '[.commands[] | {command: .name, info: .targets | group_by(.os)[] | {os: .[] | .os, languages: [.[] | .language]}}]  | unique' > commands2.json
 git clone https://github.com/tldr-pages/tldr
 for i in tldr/*pages*; do FILENAME=$(echo $i | cut -c 6-) && echo $FILENAME && zip -r "pages_zips/${FILENAME%/}.zip" "$i"; done
 # incase someone is still on the old version he should still get pages.zip
@@ -12,4 +12,4 @@ version=$(curl -s "https://api.github.com/repos/Techno-Disaster/tldr-flutter/com
 echo "{\"version\": \"$version\", \"lastUpdatedAt\": \"$(date +"%Y-%m-%d %T")\"}" > version.txt # deperacated, use versiom.json
 echo "{\"version\": \"$version\", \"lastUpdatedAt\": \"$(date +"%Y-%m-%d %T")\"}" > version.json
 # add a list of all supported languages to commands2.json
-curl -s 'https://tldr.sh/assets/' |  jq '{supportedLanguages: [.commands[] | .language | .[]] | unique}' > temp.json && jq --slurp add version.json temp.json | sponge version.json && rm temp.json
+curl -s 'https://tldr.sh/assets/' |  jq --compact-output '{supportedLanguages: [.commands[] | .language | .[]] | unique}' > temp.json && jq --compact-output --slurp add version.json temp.json | sponge version.json && rm temp.json
