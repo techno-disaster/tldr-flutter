@@ -4,9 +4,8 @@ cd static
 # json format for all commands with name, languages and platform
 curl -s 'https://tldr.sh/assets/'|  jq --compact-output '[.commands[] | {command: .name, info: .targets | group_by(.os)[] | {os: .[] | .os, languages: [.[] | .language]}}]  | unique' > commands2.json
 git clone https://github.com/tldr-pages/tldr
-for i in tldr/*pages*; do FILENAME=$(echo $i | cut -c 6-) && echo $FILENAME && zip -r "pages_zips/${FILENAME%/}.zip" "$i"; done
-# incase someone is still on the old version he should still get pages.zip
-cp pages_zips/pages.zip .
+zip -r allpages.zip tldr/pages*
+zip -r pages.zip tldr/pages # incase someone is still on the old version he should still get pages.zip
 rm -rf tldr
 version=$(curl -s "https://api.github.com/repos/Techno-Disaster/tldr-flutter/commits?path=tldrdict%2Fstatic&page=1&per_page=1" | jq -r '.[0].sha' | cut -c -6)
 echo "{\"version\": \"$version\", \"lastUpdatedAt\": \"$(date +"%Y-%m-%d %T")\"}" > version.txt # deperacated, use versiom.json

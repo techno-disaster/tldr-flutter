@@ -29,22 +29,25 @@ class _TLDRState extends State<TLDR> {
   TldrBackend api = TldrBackend();
   List<Command> commands = [];
   List<Command> suggestions = [];
-
+  bool loading = false;
   @override
   void initState() {
     getCommandsAndPages();
-
     BlocProvider.of<CommandBloc>(context).add(AppOpened());
     super.initState();
   }
 
   // initialize TLDRBackend and get commands2.json and pages.zip
   void getCommandsAndPages() async {
+    setState(() {
+      loading = true;
+    });
     List<String> versionAndDateTime =
         await api.getVersionAndLastUpdateDateTime();
     currentVersion = versionAndDateTime.first;
     var box = Hive.box(PAGES_INFO_BOX);
     box.put('version', currentVersion);
+    box.put('locale', 'ja');
     dateTime = versionAndDateTime.last;
     api.downloadPages(currentVersion, box.get('locale'));
     List data = await api.commands();
@@ -58,6 +61,7 @@ class _TLDRState extends State<TLDR> {
           );
         },
       ).toList();
+      loading = false;
     });
   }
 
@@ -183,60 +187,64 @@ class _TLDRState extends State<TLDR> {
         ),
       ),
       body: Center(
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          children: [
-            Container(
-              height: 300,
-              width: 300,
-              child: FlareActor(
-                "assets/images/tldr.flr",
-                alignment: Alignment.center,
-                fit: BoxFit.contain,
-                animation: "startup",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
-              child: AboutTldrText(),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: loading
+            ? CircularProgressIndicator()
+            : ListView(
+                physics: BouncingScrollPhysics(),
                 children: [
-                  Hero(
-                    transitionOnUserGestures: true,
-                    tag: "search-bar",
-                    child: SearchButton(
-                      commands: commands,
+                  Container(
+                    height: 300,
+                    width: 300,
+                    child: FlareActor(
+                      "assets/images/tldr.flr",
+                      alignment: Alignment.center,
+                      fit: BoxFit.contain,
+                      animation: "startup",
                     ),
                   ),
-                  RandomButton(commands: commands),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, right: 16, left: 16),
+                    child: AboutTldrText(),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: 16, right: 16, left: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Hero(
+                          transitionOnUserGestures: true,
+                          tag: "search-bar",
+                          child: SearchButton(
+                            commands: commands,
+                          ),
+                        ),
+                        RandomButton(commands: commands),
+                      ],
+                    ),
+                  ),
+                  BlocBuilder<CommandBloc, CommandState>(
+                    builder: (context, state) {
+                      state.recentCommands
+                          .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+                      state.favoriteCommands
+                          .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
+                      return Column(
+                        children: [
+                          FavoritesList(
+                            favoritesList: state.favoriteCommands,
+                          ),
+                          RecentsList(recentCommands: state.recentCommands),
+                        ],
+                      );
+                    },
+                  ),
                 ],
               ),
-            ),
-            BlocBuilder<CommandBloc, CommandState>(
-              builder: (context, state) {
-                state.recentCommands
-                    .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
-                state.favoriteCommands
-                    .sort((a, b) => a.dateTime!.compareTo(b.dateTime!));
-                return Column(
-                  children: [
-                    FavoritesList(
-                      favoritesList: state.favoriteCommands,
-                    ),
-                    RecentsList(recentCommands: state.recentCommands),
-                  ],
-                );
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

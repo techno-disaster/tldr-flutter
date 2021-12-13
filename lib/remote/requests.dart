@@ -32,7 +32,7 @@ class TldrBackend {
   Future<List<String>> getVersionAndLastUpdateDateTime() async {
     final Uri getVersionURI = Uri.https(
       'raw.githubusercontent.com',
-      '/Techno-Disaster/tldr-flutter/master/tldrdict/static/version.txt',
+      '/Techno-Disaster/tldr-flutter/master/tldrdict/static/version.json',
     );
     Map<String, dynamic> data;
     String version = '';
@@ -53,14 +53,12 @@ class TldrBackend {
   Future<String> details(Command command) async {
     String dir = (await getExternalStorageDirectory())!.path;
     var box = Hive.box(PAGES_INFO_BOX);
-    String localeDirectory = getLocaleDirectory(
-      box.get('version'),
-      box.get('locale'),
-    );
+    final String? locale = box.get('locale');
+    final String version = box.get('version');
     String details = "";
     try {
       details = File(
-              "$dir/$localeDirectory/tldr/pages/${command.platform}/${command.name}.md")
+              "$dir/${locale != null && command.languages.contains(locale) ? 'pages.$locale-$version' : 'pages-$version'}/tldr/${locale != null && command.languages.contains(locale) ? 'pages.$locale' : 'pages'}/${command.platform}/${command.name}.md")
           .readAsStringSync();
     } on Exception catch (e) {
       print(e);
@@ -68,79 +66,106 @@ class TldrBackend {
     return details;
   }
 
-  String getLocaleDirectory(String version, String? locale) {
-    return locale != null ? 'pages.$locale-$version' : 'pages-$version';
-  }
-
   void downloadPages(String version, String? locale) async {
     String dir = (await getExternalStorageDirectory())!.path;
-    String localeDirectory = getLocaleDirectory(version, locale);
-    print(localeDirectory);
-    Directory(dir + '/' + localeDirectory).create(recursive: true);
-    String filename =
-        locale != null ? 'pages.$locale-$version.zip' : 'pages-$version.zip';
+    Directory(dir + '/' + 'all-pages-$version').create(recursive: true);
+    String filename = locale != null ? 'pages.$locale.zip' : 'pages.zip';
     List<FileSystemEntity> entities = await Directory(dir).list().toList();
     List<String> paths = [];
-    latestVerionPresent(String value) => value.contains(version);
-    entities.forEach((element) {
-      if (!element.absolute.toString().contains(version) &&
-          !element.absolute.toString().split('/').last.contains('tldr') &&
-          !element.absolute.toString().split('/').last.contains('commands')) {
-        // delete all zips and folder which are not latest.
-        element.delete(recursive: true);
-      } else
-        paths.add(element.absolute.toString());
-    });
+    bool latestVerionPresent(String value) =>
+        value.contains('all-pages-$version');
+// TODO
+    // delete old versions and older languages
+    // entities.forEach((element) {
+    //   if (locale != null &&
+    //       !element.absolute.toString().split('/').last.contains('commands') &&
+    //       !element.absolute.toString().contains('pages-$version')) {
+    //     if (!element.absolute.toString().contains('.' + locale + '-' + version))
+    //       // delete all zips and folder which are not latest.
+    //       element.delete(recursive: true);
+    //   } else if (locale == null &&
+    //       !element.absolute.toString().contains('pages-$version')) {
+    //     element.delete(recursive: true);
+    //   } else
+    //     paths.add(element.absolute.toString());
+    // });
+
     if (!paths.any(latestVerionPresent)) {
       var httpClient = http.Client();
-      var request = http.Request(
+
+      http.Request allPagesRequest;
+      // http.Request? localePagesRequest;
+      allPagesRequest = http.Request(
           'GET',
           Uri.https(
             'raw.githubusercontent.com',
-            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages_zips/pages.zip',
+            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages_zips/',
           ));
-      var response = httpClient.send(request);
 
-      List<List<int>> chunks = [];
-      print(dir + '/' + localeDirectory + '/' + filename);
-      response.asStream().listen((http.StreamedResponse r) {
-        r.stream.listen((List<int> chunk) {
-          chunks.add(chunk);
-        }, onDone: () async {
-          File file = File('$dir/$localeDirectory/$filename');
-          final Uint8List bytes = Uint8List(r.contentLength!);
-          int offset = 0;
-          for (List<int> chunk in chunks) {
-            bytes.setRange(offset, offset + chunk.length, chunk);
-            offset += chunk.length;
-          }
-          await file.writeAsBytes(bytes);
-          final zipFile = File("$dir/$localeDirectory/$filename");
-          try {
-            // Read the Zip file from disk.
-            final bytes = zipFile.readAsBytesSync();
-            // Decode the Zip file
-            final archive = ZipDecoder().decodeBytes(bytes);
-            // Extract the contents of the Zip archive to disk.
-            for (final file in archive) {
-              final filename = file.name;
-              if (file.isFile) {
-                final data = file.content as List<int>;
-                File(dir + '/' + localeDirectory + '/' + filename)
-                  ..createSync(recursive: true)
-                  ..writeAsBytesSync(data);
-              } else {
-                Directory(dir + '/' + localeDirectory + '/' + filename)
-                    .create(recursive: true);
-              }
-            }
-          } catch (e) {
-            print(e);
-          }
-          return;
-        });
-      });
+      // if (locale != null)
+      //   localePagesRequest = http.Request(
+      //       'GET',
+      //       Uri.https(
+      //         'raw.githubusercontent.com',
+      //         '/Techno-Disaster/tldr-flutter/master/tldrdict/static/pages_zips/pages.$locale.zip',
+      //       ));
+
+      zipDownloader(
+        httpClient.send(allPagesRequest),
+        dir,
+        filename,
+        version,
+      );
+      // if (locale != null)
+      //   zipDownloader(
+      //     httpClient.send(localePagesRequest!),
+      //     dir,
+      //     localeDirectory,
+      //     filename,
+      //   );
     } else
       print('Already on latest version');
   }
+}
+
+void zipDownloader(Future<http.StreamedResponse> response, String dir,
+    String filename, String version) {
+  List<List<int>> chunks = [];
+  response.asStream().listen((http.StreamedResponse r) {
+    r.stream.listen((List<int> chunk) {
+      chunks.add(chunk);
+    }, onDone: () async {
+      File file = File('$dir/all-pages-$version/$filename');
+      final Uint8List bytes = Uint8List(r.contentLength!);
+      int offset = 0;
+      for (List<int> chunk in chunks) {
+        bytes.setRange(offset, offset + chunk.length, chunk);
+        offset += chunk.length;
+      }
+      await file.writeAsBytes(bytes);
+      final zipFile = File('$dir/all-pages-$version/$filename');
+      try {
+        // Read the Zip file from disk.
+        final bytes = zipFile.readAsBytesSync();
+        // Decode the Zip file
+        final archive = ZipDecoder().decodeBytes(bytes);
+        // Extract the contents of the Zip archive to disk.
+        for (final file in archive) {
+          final filename = file.name;
+          if (file.isFile) {
+            final data = file.content as List<int>;
+            File(dir + '/all-pages-$version/' + filename)
+              ..createSync(recursive: true)
+              ..writeAsBytesSync(data);
+          } else {
+            Directory(dir + '/all-pages-$version/' + filename)
+                .create(recursive: true);
+          }
+        }
+      } catch (e) {
+        print(e);
+      }
+      return;
+    });
+  });
 }
