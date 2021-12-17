@@ -29,30 +29,25 @@ class TldrBackend {
     return data;
   }
 
-  Future<List<String>> getVersionAndLastUpdateDateTime() async {
+  Future<void> getVersionAndLastUpdateDateTime() async {
     final Uri getVersionURI = Uri.https(
       'raw.githubusercontent.com',
       '/Techno-Disaster/tldr-flutter/master/tldrdict/static/version.json',
     );
     Map<String, dynamic> data;
-    String version = '';
-    String datetime = '';
-    List? supportedLanguages;
     try {
       http.Response response = await http.get(getVersionURI);
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
-        version = data['version'];
-        datetime = data['lastUpdatedAt'];
-        supportedLanguages = data['supportedLanguages'];
+        var box = Hive.box(PAGES_INFO_BOX);
+        box.put('version', data['version']);
+        box.put('datetime', data['lastUpdatedAt']);
+        box.put('supportedLanguages', data['supportedLanguages']);
+        print('updated pages data in box');
       }
     } on Exception catch (e) {
       print(e);
     }
-    var box = Hive.box(PAGES_INFO_BOX);
-    box.put('version', version);
-    box.put('supportedLanguages', supportedLanguages);
-    return [version, datetime];
   }
 
   Future<String> details(Command command) async {

@@ -59,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ListTile(
                     title: Text('Language'),
                     subtitle:
-                        Text('Change default language command descriptions'),
+                        Text('Change language for commands tldr'),
                     trailing: Column(
                       children: [
                         Text(flag(currentLocale ?? 'en')),
