@@ -11,23 +11,26 @@ class Command extends Equatable {
   final String platform;
   @HiveField(2)
   final DateTime? dateTime;
-  @HiveField(3)
+  @HiveField(3, defaultValue: [])
   final List languages;
-  Command(
-      {required this.name,
-      required this.platform,
-      this.dateTime,
-      required this.languages});
+  Command({
+    required this.name,
+    required this.platform,
+    this.dateTime,
+    required this.languages,
+  });
   Command copyWith({
     String? name,
     String? platform,
     DateTime? datetime,
+    List? languages,
   }) {
     return Command(
-        name: name ?? this.name,
-        platform: platform ?? this.platform,
-        dateTime: dateTime ?? this.dateTime,
-        languages: this.languages);
+      name: name ?? this.name,
+      platform: platform ?? this.platform,
+      dateTime: dateTime ?? this.dateTime,
+      languages: languages ?? this.languages,
+    );
   }
 
   @override

@@ -20,7 +20,7 @@ class CommandAdapter extends TypeAdapter<Command> {
       name: fields[0] as String,
       platform: fields[1] as String,
       dateTime: fields[2] as DateTime?,
-      languages: (fields[3] as List).cast<dynamic>(),
+      languages: fields[3] == null ? [] : (fields[3] as List).cast<dynamic>(),
     );
   }
 
