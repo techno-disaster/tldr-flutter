@@ -1,1 +1,1 @@
-{"version": "6afdc3", "lastUpdatedAt": "2022-01-06 01:22:41"}
+{"version": "3204cf", "lastUpdatedAt": "2022-01-07 01:22:46"}
