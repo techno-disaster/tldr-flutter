@@ -13,7 +13,7 @@ import 'blocs/command_bloc/command_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  BlocOverrides.runZoned(() {}, blocObserver: SimpleBlocObserver());
+  Bloc.observer = SimpleBlocObserver();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(CommandAdapter());
@@ -34,12 +34,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'tldr man-pages',
         theme: ThemeData(
-          backgroundColor: Color(0xff17181c),
           canvasColor: Color(0xff17181c),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           colorScheme: ColorScheme.fromSwatch().copyWith(
             secondary: Color(0xff2e8fff),
             brightness: Brightness.dark,
+            background: Color(0xff17181c),
           ),
           appBarTheme: AppBarTheme(
             systemOverlayStyle: SystemUiOverlayStyle.light,

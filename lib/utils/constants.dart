@@ -21,7 +21,7 @@ final String flareURL =
     "https://flare.rive.app/a/cvl/files/flare/site-animaton/embed";
 
 final String iconURL = "https://github.com/tldr-pages";
-final String appURL = "https://github.com/Techno-Disaster/tldr-flutter";
+final String appURL = "https://github.com/techno-disaster/tldr-flutter";
 
 final String baseURL = "https://github.com/tldr-pages/tldr/blob/main/pages/";
 String formatDuration(Duration d) {
@@ -86,7 +86,7 @@ Route createAboutPageRoute() {
 showAlertDialog(BuildContext context, Command command) {
   final favCountriesBox = Hive.box(FAVORITE_COMMANDS);
   AlertDialog alert = AlertDialog(
-    backgroundColor: Theme.of(context).backgroundColor,
+    backgroundColor: Theme.of(context).colorScheme.background,
     title: Text("Delete ${command.name} from your favorites?"),
     actions: [
       MaterialButton(

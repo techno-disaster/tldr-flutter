@@ -16,7 +16,7 @@ class TldrBackend {
     File file = File("$dir/commands.json");
     final Uri commandsUrl = Uri.https(
       'raw.githubusercontent.com',
-      '/Techno-Disaster/tldr-flutter/master/tldrdict/static/commands2.json',
+      '/techno-disaster/tldr-flutter/master/tldrdict/static/commands2.json',
     );
     var data = [];
     try {
@@ -32,7 +32,7 @@ class TldrBackend {
   Future<void> getVersionAndLastUpdateDateTime() async {
     final Uri getVersionURI = Uri.https(
       'raw.githubusercontent.com',
-      '/Techno-Disaster/tldr-flutter/master/tldrdict/static/version.json',
+      '/techno-disaster/tldr-flutter/master/tldrdict/static/version.json',
     );
     Map<String, dynamic> data;
     try {
@@ -93,7 +93,7 @@ class TldrBackend {
           'GET',
           Uri.https(
             'raw.githubusercontent.com',
-            '/Techno-Disaster/tldr-flutter/master/tldrdict/static/allpages.zip',
+            '/techno-disaster/tldr-flutter/master/tldrdict/static/allpages.zip',
           ));
       zipDownloaderAndExtractor(
         httpClient.send(allPagesRequest),

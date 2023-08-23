@@ -4,13 +4,13 @@
   </a>
 
   <p align="center">
-    <a href="https://github.com/Techno-Disaster/tldr-flutter/issues/new?template=bug_report.md">Report bug</a>
+    <a href="https://github.com/techno-disaster/tldr-flutter/issues/new?template=bug_report.md">Report bug</a>
     ·
-    <a href="https://github.com/Techno-Disaster/tldr-flutter/issues/new?template=feature_request.md">Request feature</a>
+    <a href="https://github.com/techno-disaster/tldr-flutter/issues/new?template=feature_request.md">Request feature</a>
   </p>
 </p>
 
-[![GitHub All Releases](https://img.shields.io/github/downloads/Techno-Disaster/tldr-flutter/total.svg)](https://github.com/Techno-Disaster/tldr-flutter/releases/latest)
+[![GitHub All Releases](https://img.shields.io/github/downloads/techno-disaster/tldr-flutter/total.svg)](https://github.com/techno-disaster/tldr-flutter/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![bloc](https://img.shields.io/badge/flutter-bloc-blue)](https://github.com/felangel/bloc)
 
@@ -54,7 +54,7 @@ This app is just that: an ever-growing collection of examples for the most commo
 
 ## Bugs and feature requests
 
-[Please open a new issue](https://github.com/Techno-Disaster/tldr-flutter/issues/new?template=bug_report.md).
+[Please open a new issue](https://github.com/techno-disaster/tldr-flutter/issues/new?template=bug_report.md).
 
 ## Contributing
 
@@ -68,4 +68,4 @@ Currently open to all contributions. Hit those issue and PR buttons.
 
 ## Copyright and license
 
-Code released under the [MIT License](https://github.com/Techno-Disaster/tldr-flutter/blob/master/LICENSE).
+Code released under the [MIT License](https://github.com/techno-disaster/tldr-flutter/blob/master/LICENSE).

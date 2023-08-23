@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -68,21 +67,8 @@ class _CommandDetailsState extends State<CommandDetails> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         data: details ??
-                            'No details found, this should never happen please file a bug report [here](https://github.com/Techno-Disaster/tldr-flutter/issues)',
-                        childMargin: EdgeInsets.all(10),
-                        loadingWidget: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        styleConfig: StyleConfig(
-                          codeConfig: CodeConfig(
-                            codeStyle: GoogleFonts.robotoMono(fontSize: 12),
-                          ),
-                          pConfig: PConfig(
-                            selectable: false,
-                            onLinkTap: (url) => _launchUrl(url),
-                          ),
-                          markdownTheme: MarkdownTheme.darkTheme,
-                        ),
+                            'No details found, this should never happen please file a bug report [here](https://github.com/techno-disaster/tldr-flutter/issues)',
+                        config: MarkdownConfig.darkConfig,
                       ),
                       SizedBox(
                         height: 30,
@@ -95,7 +81,7 @@ class _CommandDetailsState extends State<CommandDetails> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           color: Color(0xff2e2f37),
-                          onPressed: () => _launchUrl(commandUrl),
+                          onPressed: () => _launchUrl(Uri.parse(commandUrl)),
                           child: Row(
                             children: [
                               Container(
@@ -134,5 +120,6 @@ class _CommandDetailsState extends State<CommandDetails> {
   }
 }
 
-void _launchUrl(_url) async =>
-    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+void _launchUrl(Uri _url) async => await canLaunchUrl(_url)
+    ? await launchUrl(_url, mode: LaunchMode.externalApplication)
+    : throw 'Could not launch ${_url.toString()}';

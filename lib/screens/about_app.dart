@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import 'package:google_fonts/google_fonts.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -51,16 +50,7 @@ class AboutApp extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   data: aboutApp,
-                  styleConfig: StyleConfig(
-                    codeConfig: CodeConfig(
-                      codeStyle: GoogleFonts.robotoMono(fontSize: 12),
-                    ),
-                    pConfig: PConfig(
-                      selectable: false,
-                      onLinkTap: (url) => _launchUrl(url),
-                    ),
-                    markdownTheme: MarkdownTheme.darkTheme,
-                  ),
+                  config: MarkdownConfig.darkConfig,
                 ),
                 SizedBox(
                   height: 10,
@@ -73,7 +63,7 @@ class AboutApp extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     color: Color(0xff2e2f37),
-                    onPressed: () => _launchUrl(appURL),
+                    onPressed: () => _launchUrl(Uri.parse(appURL)),
                     child: Row(
                       children: [
                         Container(
@@ -127,7 +117,8 @@ class AboutApp extends StatelessWidget {
                               text: "here",
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  launch(flareURL);
+                                  launchUrl(Uri.parse(flareURL),
+                                      mode: LaunchMode.externalApplication);
                                 },
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
@@ -150,7 +141,8 @@ class AboutApp extends StatelessWidget {
                               text: "here",
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  launch(iconURL);
+                                  launchUrl(Uri.parse(iconURL),
+                                      mode: LaunchMode.externalApplication);
                                 },
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
@@ -171,5 +163,6 @@ class AboutApp extends StatelessWidget {
   }
 }
 
-void _launchUrl(_url) async =>
-    await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+void _launchUrl(Uri _url) async => await canLaunchUrl(_url)
+    ? await launchUrl(_url, mode: LaunchMode.externalApplication)
+    : throw 'Could not launch ${_url.toString()}';

@@ -177,9 +177,11 @@ class _TLDRState extends State<TLDR> {
                             text: 'here',
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                launch(
-                                  'https://github.com/Techno-Disaster/tldr-flutter/blob/master/tldrdict/static/version.txt',
-                                );
+                                launchUrl(
+                                    Uri.parse(
+                                      'https://raw.githubusercontent.com/techno-disaster/tldr-flutter/master/tldrdict/static/version.json',
+                                    ),
+                                    mode: LaunchMode.externalApplication);
                               },
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.secondary,
@@ -393,9 +395,8 @@ class AboutTldrText extends StatelessWidget {
             text: "man pages ",
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                launch(
-                  'https://en.wikipedia.org/wiki/Man_page',
-                );
+                launchUrl(Uri.parse('https://en.wikipedia.org/wiki/Man_page'),
+                    mode: LaunchMode.externalApplication);
               },
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
