@@ -1,0 +1,30 @@
+jobs:
+  include:
+    - os: linux
+      name: Android
+      language: android
+      android:
+        components:
+          - tools
+          - platform-tools
+          - build-tools-28.0.3
+          - android-29
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - libstdc++6
+            - fonts-droid
+      before_install:
+        - echo "yes | sudo sdkmanager --licenses"
+      install:
+        - sudo apt-get install -y --no-install-recommends lib32stdc++6 libstdc++6 > /dev/null
+        - git clone https://github.com/flutter/flutter.git -b stable
+        - export PATH=$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH
+        - flutter doctor
+        - gem install bundler
+        - cd android && bundler install && cd ..
+      script:
+        - sudo chmod 777 ./deploy/android.sh
+        - ./deploy/android.sh
