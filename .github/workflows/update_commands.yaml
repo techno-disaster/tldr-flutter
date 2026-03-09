@@ -25,7 +25,6 @@ jobs:
       - name: Execute get pages and version zips
         run: |
           cd tldrdict
-          python update.py
           sudo apt install moreutils
           ./update_pages.sh
 
